@@ -71,6 +71,32 @@ const routes = [
 
 
 
+
+  /* ========== routing administrateur ============== */
+
+  {
+    path: '/administrateur/create-account',
+    name: 'admin-create-account',
+    component: () => import('@/views/administrateur/Admin_new.vue'),
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     path: '/pages/register',
     name: 'pages-register',

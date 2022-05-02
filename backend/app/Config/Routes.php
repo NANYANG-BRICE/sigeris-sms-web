@@ -36,6 +36,7 @@ $routes->setAutoRoute(true);
 
     $routes->post('SignIn', 'Authentification::authentification');
     $routes->post('Recover', 'Authentification::recover_password');
+    $routes->post('Activate', 'Authentification::activate_account');
 
 
 

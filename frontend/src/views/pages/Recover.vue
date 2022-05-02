@@ -88,7 +88,7 @@
               <v-checkbox label="Je le souhaite réélement !" v-model='checkbox' hide-details class="me-3 mt-1"> </v-checkbox>
 
               <!-- forgot link -->
-              <router-link :to="{name:'pages-recuver'}">
+              <router-link :to="{name:'pages-register'}">
                 <a href="javascript:void(0)" class="mt-1">
                   J'ai pas de compte ?
                 </a>

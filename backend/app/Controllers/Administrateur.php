@@ -59,10 +59,6 @@ class Administrateur extends ResourceController {
                 'label' => 'Password',  
                 'rules' => 'trim|required'
             ],
-            'admin_confirm_password'  => [
-                'label' => 'Confirm Password',  
-                'rules' => 'trim|required|matches[admin_password]'
-            ],
             'admin_firstname'    => [
                 'label' => 'First Name',
                 'rules' => 'trim|required|min_length[5]|max_length[100]'
@@ -75,6 +71,10 @@ class Administrateur extends ResourceController {
                 'label' => 'Contact Orange', 
                 'rules' => 'trim|required|is_unique[administrateur.admin_contact1]|exact_length[9]'
             ],
+            'admin_contact2'         => [
+                'label' => 'Contact MTN', 
+                'rules' => 'trim|required|exact_length[9]'
+            ],
         ];
 
         if (!$this->validate($conditions_validations)){
@@ -84,6 +84,10 @@ class Administrateur extends ResourceController {
         }
         else{
             $json = $this->request->getJSON();
+            if ($json->admin_privileges == '') {
+                $json->admin_privileges = 'all';
+            }
+            
             $data = [
                 'admin_matricule'       => generate_matricule(),
                 'admin_username'        => $json->admin_username,
@@ -91,14 +95,12 @@ class Administrateur extends ResourceController {
                 'admin_password'        => $json->admin_password,
                 'admin_firstname'       => $json->admin_firstname,
                 'admin_lastname'        => $json->admin_lastname,
-                'admin_picture'         => $json->admin_picture,
                 'admin_contact1'        => $json->admin_contact1,
                 'admin_contact2'        => $json->admin_contact2,
-                'admin_privileges'      => 'all',
-                'admin_statut'          => 'actif',
+                'admin_privileges'      => $json->admin_privileges,
+                'admin_statut'          => 'latent',
                 'admin_token'           => generer_token(),
                 'admin_code_activation' => generer_code_activation(),
-                'admin_activate_at'     => '',
                 'admin_create_as'       => date('Y-m-d H:i:s')
             ];
             
@@ -145,6 +147,10 @@ class Administrateur extends ResourceController {
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
+                'rules' => 'trim|required|exact_length[9]'
+            ],
+            'admin_contact2'         => [
+                'label' => 'Contact MTN', 
                 'rules' => 'trim|required|exact_length[9]'
             ],
         ];

@@ -3,7 +3,7 @@
     :value="isDrawerOpen"
     app
     floating
-    width="260"
+    width="300"
     class="app-navigation-menu"
     :right="$vuetify.rtl"
     @input="val => $emit('update:is-drawer-open', val)"
@@ -25,7 +25,7 @@
         ></v-img>
         <v-slide-x-transition>
           <h2 class="app-title text--primary">
-            MATERIO
+            SIGERIS-SMS
           </h2>
         </v-slide-x-transition>
       </router-link>
@@ -37,37 +37,26 @@
       shaped
       class="vertical-nav-menu-items pr-5"
     >
-      <nav-menu-link
-        title="Dashboard"
-        :to="{ name: 'dashboard' }"
-        :icon="icons.mdiHomeOutline"
-      ></nav-menu-link>
-      <nav-menu-link
-        title="Account Settings"
-        :to="{ name: 'pages-account-settings'}"
-        :icon="icons.mdiAccountCogOutline"
-      ></nav-menu-link>
-      <nav-menu-group
-        title="Pages"
-        :icon="icons.mdiFileOutline"
-      >
-        <nav-menu-link
-          title="Login"
-          :to="{ name: 'pages-login' }"
-          target="_blank"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Register"
-          :to="{ name: 'pages-register' }"
-          target="_blank"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Error"
-          :to="{ name: 'error-404' }"
-          target="_blank"
-        ></nav-menu-link>
+      <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline" ></nav-menu-link>
+      <nav-menu-link title="Account Settings" :to="{ name: 'pages-account-settings'}" :icon="icons.mdiAccountCogOutline" ></nav-menu-link>
+
+      <nav-menu-group  title="Administrateurs" :icon="icons.mdiFileOutline" >
+        <nav-menu-link  
+          title="Nouveau" 
+          :to="{ name: 'admin-create-account' }">
+        </nav-menu-link>
+
+        <nav-menu-link  title="Register" :to="{ name: 'pages-register' }" target="_blank" ></nav-menu-link>
+        <nav-menu-link  title="Error" :to="{ name: 'error-404' }" target="_blank" ></nav-menu-link>
       </nav-menu-group>
-      <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title>
+
+      <nav-menu-group title="Pages" :icon="icons.mdiFileOutline" >
+        <nav-menu-link title="Login" :to="{ name: 'pages-login' }" target="_blank" ></nav-menu-link>
+        <nav-menu-link title="Register" :to="{ name: 'pages-register' }" target="_blank" ></nav-menu-link>
+        <nav-menu-link title="Error" :to="{ name: 'error-404' }" target="_blank" ></nav-menu-link>
+      </nav-menu-group>
+
+      <!-- <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title> -->
       <nav-menu-link
         title="Typography"
         :to="{ name: 'typography' }"
