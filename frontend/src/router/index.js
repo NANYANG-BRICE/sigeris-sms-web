@@ -80,6 +80,12 @@ const routes = [
     component: () => import('@/views/administrateur/Admin_new.vue'),
   },
 
+  {
+    path: '/administrateur/listing-account',
+    name: 'admin-listing-account',
+    component: () => import('@/views/administrateur/Admin_listing.vue'),
+  },
+
 
 
 

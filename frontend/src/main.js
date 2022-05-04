@@ -11,6 +11,7 @@ import store from './store'
 /* module Axios pour interaction via API */
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/';
+axios.defaults.headers.common['Authorization'];
 
 
 
@@ -26,8 +27,11 @@ import "@andresouzaabreu/vue-data-table/dist/DataTable.css";
 Vue.component("data-table", DataTable);
 
 
-
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
+
+
+import 'font-awesome/css/font-awesome.min.css';
 
 
 

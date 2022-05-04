@@ -13,7 +13,7 @@
           </router-link>
         </v-card-title>
 
-        <!-- login form -->
+       <!-- login form -->
         <v-card-text>
           <v-form @submit.prevent="Authentification">
             <span class="text-danger">{{msg_admin_username}}</span>
@@ -59,10 +59,10 @@
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
           <span class="me-2">
-            J'ai pas encore de compte ?
+            J'ai déjà un compte actif ?
           </span>
-          <router-link :to="{name:'pages-register'}">
-            J'active maintenant
+          <router-link :to="{name:'pages-login'}">
+            S'authentifier
           </router-link>
         </v-card-text>
       </v-card>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-  import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
+  import { mdiEyeOutline, mdiEyeOffOutline  } from '@mdi/js'
   import { ref } from '@vue/composition-api'
   import Swal from 'sweetalert2'
   import axios from "axios";
@@ -90,12 +90,13 @@
   export default {
     setup() {
       const isPasswordVisible = ref(false)
+      const isPasswordVisible1 = ref(false)
       const checkbox = ref(true)
-      const socialLink = [
-      ]
+      const socialLink = []
 
       return {
         isPasswordVisible,
+        isPasswordVisible1,
         checkbox,
         socialLink,
 
@@ -122,10 +123,14 @@
             admin_username: this.admin_username,
             admin_password: this.admin_password,
           });
+          console.log(response);
+          localStorage.setItem('token', response.data.token);
+          console.log(token);
           (this.admin_username= ""),
           (this.admin_password= ""),
 
           console.log(response.data);
+
           if (response.data.error === true) {
             Swal.fire({
               backdrop:true, 

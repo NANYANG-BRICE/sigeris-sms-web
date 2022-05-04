@@ -41,12 +41,17 @@
       <nav-menu-link title="Account Settings" :to="{ name: 'pages-account-settings'}" :icon="icons.mdiAccountCogOutline" ></nav-menu-link>
 
       <nav-menu-group  title="Administrateurs" :icon="icons.mdiFileOutline" >
+
+        <nav-menu-link  
+          title="Liste" 
+          :to="{ name: 'admin-listing-account' }" >
+        </nav-menu-link>
+        
         <nav-menu-link  
           title="Nouveau" 
           :to="{ name: 'admin-create-account' }">
         </nav-menu-link>
 
-        <nav-menu-link  title="Register" :to="{ name: 'pages-register' }" target="_blank" ></nav-menu-link>
         <nav-menu-link  title="Error" :to="{ name: 'error-404' }" target="_blank" ></nav-menu-link>
       </nav-menu-group>
 

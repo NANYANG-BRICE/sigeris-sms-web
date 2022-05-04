@@ -174,8 +174,8 @@ class Authentification extends ResourceController {
                 $array = $model_admin->where('admin_matricule', $matricule)->where('admin_token', $token)->first();
 
                 if ($array) {
-                    $key        = $array['admin_password'];
-                    $$id_admin  = $array['$id_admin'];
+                    $id_admin           = $array['$id_admin'];
+                    $admin_password     = $array['admin_password'];
                     $authenticate_password = $this->verify_password($password, $admin_password);
 
                     if ($authenticate_password == true) {
@@ -186,18 +186,8 @@ class Authentification extends ResourceController {
 
                         $model_admin = new AdministrateurModel();
                         $find = $model_admin->find(['id_admin' => $id_admin]);
-
-                        if (!$find) {
-                            return $this->fail('Aucune donnée trouvée', 404);
-                        } else {
-                            $administrateur = $model_admin->update($id_admin, $data);
-                        }
-
-                        if (!$administrateur) {
-                            return $this->fail('Echec survenue durant l\'activation du compte', 400);
-                        } else {
-                            return $this->respond($administrateur);
-                        }
+                        $administrateur = $model_admin->update($id_admin, $data);
+                        return $this->respond($administrateur);
                     }
                     else{
                         return $this->failNotFound('Désolé mais votre password est incorrecte !');
