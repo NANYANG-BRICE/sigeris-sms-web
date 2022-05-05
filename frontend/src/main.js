@@ -30,6 +30,8 @@ Vue.component("data-table", DataTable);
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 
+import "./styles/main.scss";
+import directives from "./directives/";
 
 import 'font-awesome/css/font-awesome.min.css';
 

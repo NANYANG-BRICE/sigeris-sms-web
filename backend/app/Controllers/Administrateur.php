@@ -67,11 +67,11 @@ class Administrateur extends ResourceController {
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'trim|required|is_unique[administrateur.admin_contact1]|exact_length[9]'
+                'rules' => 'trim|required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|exact_length[9]'
             ],
             'admin_contact2'         => [
                 'label' => 'Contact MTN', 
-                'rules' => 'trim|required|exact_length[9]'
+                'rules' => 'trim|required|exact_length[9]|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]'
             ],
         ];
 
@@ -115,7 +115,8 @@ class Administrateur extends ResourceController {
 
 
 
-    public function update_administrateur($id_admin = null)
+        
+    public function update_administrateur()
     {
         helper(['form', 'url']);
         $conditions_validations = [
@@ -130,10 +131,6 @@ class Administrateur extends ResourceController {
             'admin_password'  => [
                 'label' => 'Password',  
                 'rules' => 'trim|required'
-            ],
-            'admin_confirm_password'  => [
-                'label' => 'Confirm Password',  
-                'rules' => 'trim|required|matches[admin_password]'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
@@ -160,7 +157,9 @@ class Administrateur extends ResourceController {
         }
         else{
             $json = $this->request->getJSON();
+
             $data = [
+                'id_admin'              => $json->id_admin,
                 'admin_username'        => $json->admin_username,
                 'admin_email'           => $json->admin_email,
                 'admin_password'        => $json->admin_password,
@@ -169,17 +168,19 @@ class Administrateur extends ResourceController {
                 'admin_picture'         => $json->admin_picture,
                 'admin_contact1'        => $json->admin_contact1,
                 'admin_contact2'        => $json->admin_contact2,
-                'admin_code_activation' => generer_code_activation(),
                 'admin_update_as'       => date('Y-m-d H:i:s')
             ];
             
             $model_admin = new AdministrateurModel();
-            $find = $model_admin->find(['id_admin' => $id_admin]);
+            $find = $model_admin->find(['id_admin' => $data['id_admin'] ]);
 
             if (!$find) {
-                return $this->fail('Aucun administrateur trouvé', 400);
+                $data["error"] = true;
+                return $this->respondCreated($data, 400);
             } else {
                 $administrateur = $model_admin->update($id_admin, $data);
+                $data["error"] = false;
+                return $this->respondCreated($data, 200);
             }
 
             if (!$administrateur) {

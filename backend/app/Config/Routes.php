@@ -44,6 +44,7 @@ $routes->setAutoRoute(true);
 
     $routes->get('Getting_admin', 'Administrateur::select_all_administrateur');
     $routes->post('Create_admin', 'Administrateur::create_new_administrateur');
+    $routes->post('Update_admin', 'Administrateur::update_administrateur');
     $routes->get('Countting_admin', 'Administrateur::select_count_administrateur');
     $routes->get('Get_admin/(:any)', 'Administrateur::select_one_administrateur/$1');
     $routes->get('Desable_admin/(:any)', 'Administrateur::desable_administrateur/$1');

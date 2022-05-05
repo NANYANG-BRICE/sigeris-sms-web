@@ -35,29 +35,29 @@
 								<v-row class="mt-2">
 									<v-col md="6" cols="12" >
 										<span class="text-danger">{{msg_admin_username}}</span>
-						                <v-text-field 
-						                  :prepend-inner-icon="icons.mdiAccountLockOutline"
-						                  v-model="admin_username"
-						                  outlined
-						                  label="Username"
-						                  placeholder="Nanyang Brice........"
-						                  hide-details
-						                  class="mb-3">
-						                </v-text-field>
-						            </v-col>
+												<v-text-field 
+												:prepend-inner-icon="icons.mdiAccountLockOutline"
+												v-model="admin_username"
+												outlined
+												label="Username"
+												placeholder="Nanyang Brice........"
+												hide-details
+												class="mb-3">
+											</v-text-field>
+										</v-col>
 
-					              <v-col md="6" cols="12" >
-										<span class="text-danger">{{msg_admin_username}}</span>
-					                <v-text-field
-										:prepend-inner-icon="icons.mdiEmailCheckOutline"
-										v-model="admin_email"
-										outlined
-										label="Email"
-										placeholder="nanyangbrice@gmail.com........"
-										hide-details
-										class="mb-3">
-					                </v-text-field>
-					              </v-col>
+										<v-col md="6" cols="12" >
+											<span class="text-danger">{{msg_admin_username}}</span>
+											<v-text-field
+											:prepend-inner-icon="icons.mdiEmailCheckOutline"
+											v-model="admin_email"
+											outlined
+											label="Email"
+											placeholder="nanyangbrice@gmail.com........"
+											hide-details
+											class="mb-3">
+										</v-text-field>
+									</v-col>
 								</v-row>
 
 								<v-row>
