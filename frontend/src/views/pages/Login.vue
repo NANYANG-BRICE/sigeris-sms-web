@@ -8,7 +8,7 @@
           <router-link to="/" class="d-flex align-center">
             <v-img :src="require('@/assets/images/logos/logo.svg')" max-height="30px" max-width="30px" alt="logo" contain class="me-3 "></v-img>
             <h2 class="text-2xl font-weight-semibold">
-              SIGERIS
+              SIGERIS-SMS
             </h2>
           </router-link>
         </v-card-title>
@@ -18,6 +18,7 @@
           <v-form @submit.prevent="Authentification">
             <span class="text-danger">{{msg_admin_username}}</span>
             <v-text-field
+              :prepend-inner-icon="icons.mdiAccountHardHat"
               v-model="admin_username"
               outlined
               label="Username"
@@ -28,6 +29,7 @@
 
             <span class="text-danger">{{msg_admin_password}}</span>
             <v-text-field
+              :prepend-inner-icon="icons.mdiLockAlertOutline"
               v-model="admin_password"
               outlined
               :type="isPasswordVisible ? 'text' : 'password'"
@@ -59,10 +61,10 @@
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
           <span class="me-2">
-            J'ai déjà un compte actif ?
+            J'ai un compte mais inactif ?
           </span>
-          <router-link :to="{name:'pages-login'}">
-            S'authentifier
+          <router-link :to="{name:'pages-register'}">
+            J'active
           </router-link>
         </v-card-text>
       </v-card>
@@ -80,7 +82,7 @@
 </template>
 
 <script>
-  import { mdiEyeOutline, mdiEyeOffOutline  } from '@mdi/js'
+  import { mdiEyeOutline, mdiEyeOffOutline, mdiAccountHardHat, mdiLockAlertOutline  } from '@mdi/js'
   import { ref } from '@vue/composition-api'
   import Swal from 'sweetalert2'
   import axios from "axios";
@@ -103,6 +105,8 @@
         icons: {
           mdiEyeOutline,
           mdiEyeOffOutline,
+          mdiAccountHardHat,
+          mdiLockAlertOutline,
         },
       }
     },
@@ -124,8 +128,8 @@
             admin_password: this.admin_password,
           });
           console.log(response);
-          localStorage.setItem('token', response.data.token);
-          console.log(token);
+          //localStorage.setItem('token', response.data.token);
+          //console.log(token);
           (this.admin_username= ""),
           (this.admin_password= ""),
 

@@ -1,6 +1,6 @@
 <template>
   <div class="auth-wrapper auth-v1">
-    <div class="auth-inner col-md-6">
+    <div class="auth-inner col-md-5">
       <v-card class="auth-card">
 
         <!-- logo -->
@@ -18,7 +18,7 @@
         <v-card-text>
           <v-form @submit.prevent="Reinitialisation">
             <v-row>
-              <v-col md="6" cols="12" >
+              <v-col md="12" cols="12" >
                 <span class="text-danger">{{msg_admin_username}}</span>
                 <v-text-field 
                   :prepend-inner-icon="icons.mdiAccountHardHat"
@@ -26,12 +26,11 @@
                   outlined
                   label="Username"
                   placeholder="Nanyang Brice........"
-                  hide-details
-                  class="mb-3">
+                  hide-details>
                 </v-text-field>
               </v-col>
 
-              <v-col md="6" cols="12" >
+              <v-col md="12" cols="12" >
                 <span class="text-danger">{{msg_admin_email}}</span>
                 <v-text-field
                   :prepend-inner-icon="icons.mdiEmailCheckOutline"
@@ -40,15 +39,13 @@
                   label="Email"
                   placeholder="nanyangbrice@gmail.com........"
                   hide-details
-                  :items="types"
-                  class="mb-3">
+                  :items="types">
                 </v-text-field>
               </v-col>
 
-              <v-col md="6" cols="12" >
+              <v-col md="12" cols="12" >
                 <span class="text-danger">{{msg_admin_password}}</span>
                 <v-text-field
-                  class="mb-3"
                   :prepend-inner-icon="icons.mdiLockAlertOutline"
                   v-model="admin_password"
                   outlined
@@ -61,10 +58,9 @@
                 </v-text-field>
               </v-col>
 
-              <v-col md="6" cols="12" >
+              <v-col md="12" cols="12" >
                 <span class="text-danger">{{msg_admin_password}}</span>
                 <v-text-field
-                  class="mb-3"
                   :prepend-inner-icon="icons.mdiLockAlertOutline"
                   v-model="admin_password"
                   outlined
@@ -201,7 +197,7 @@
               confirmButtonText: "Je comprend !",
               icon: 'error',
               title: 'Failed !',
-              text: 'Authentification refusée veillez rééseiller...',
+              text: 'Echec survenue durant la récupération de compte rééseillez plutard...',
               timer: 15000,
             })
 

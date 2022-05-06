@@ -15,7 +15,9 @@ class Administrateur extends ResourceController {
     public function select_all_administrateur()
     {
         $model_admin = new AdministrateurModel();
-        $data = $model_admin->findAll();
+        $data['actif'] = $model_admin->where(['admin_statut' => 'actif'])->findAll();
+        $data['inactif'] = $model_admin->where(['admin_statut' => 'inactif'])->findAll();
+        $data['latent'] = $model_admin->where(['admin_statut' => 'latent'])->findAll();
         
         if (!$data) {
             return $this->failNotFound('Aucun administrateur dans la base de données');

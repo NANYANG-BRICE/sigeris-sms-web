@@ -41,7 +41,6 @@
       <nav-menu-link title="Account Settings" :to="{ name: 'pages-account-settings'}" :icon="icons.mdiAccountCogOutline" ></nav-menu-link>
 
       <nav-menu-group  title="Administrateurs" :icon="icons.mdiFileOutline" >
-
         <nav-menu-link  
           title="Liste" 
           :to="{ name: 'admin-listing-account' }" >
@@ -51,8 +50,6 @@
           title="Nouveau" 
           :to="{ name: 'admin-create-account' }">
         </nav-menu-link>
-
-        <nav-menu-link  title="Error" :to="{ name: 'error-404' }" target="_blank" ></nav-menu-link>
       </nav-menu-group>
 
       <nav-menu-group title="Pages" :icon="icons.mdiFileOutline" >
@@ -88,19 +85,6 @@
         :icon="icons.mdiFormSelect"
       ></nav-menu-link>
     </v-list>
-    <a
-      href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template"
-      target="_blank"
-      rel="nofollow"
-    >
-      <v-img
-        :src="require(`@/assets/images/pro/upgrade-banner-${$vuetify.theme.dark ? 'dark' : 'light'}.png`)"
-        alt="upgrade-banner"
-        transition="scale-transition"
-        class="upgrade-banner mx-auto"
-        max-width="230"
-      ></v-img>
-    </a>
   </v-navigation-drawer>
 </template>
 
