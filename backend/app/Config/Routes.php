@@ -60,6 +60,16 @@ $routes->setAutoRoute(true);
 
 
 
+/* ==================== fonctionnalitées concernant les étudiants ==================== */
+
+    $routes->get('Getting_student', 'Etudiants::select_all_students');
+    $routes->post('Create_student', 'Etudiants::create_new_student');
+    $routes->get('Custom_count_student', 'Etudiants::custom_count_all_about_students');
+    $routes->get('Custom_student_search/(:any)', 'Etudiants::custom_search_about_student/$1');
+    $routes->post('Print_student_list', 'Etudiants::print_pdf_student_list');
+    
+    
+
 
 
 

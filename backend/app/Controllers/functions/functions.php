@@ -16,7 +16,7 @@
 	}
 
     function generer_token() {
-        $length = rand(55, 75);
+        $length = rand(90, 125);
         $caracteres = 'aLABbC0cEd1eDf2FghR(3ij4kYXQl5UmOPn6pVq7rJs8tuW9IvGwxHTyKZMS';
         $maxlength = strlen($caracteres);
         $result = '';
@@ -27,7 +27,7 @@
     }
 
     function generer_code_activation(){
-        $result = rand(10000000, 99999999);
+        $result = rand(100000, 999999);
         return $result;
     }
 ?>

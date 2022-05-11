@@ -89,6 +89,29 @@ const routes = [
 
 
 
+  /* ========== routing étudiants ============== */
+
+  {
+    path: '/etudiants/create-account',
+    name: 'student-create-account',
+    component: () => import('@/views/etudiants/Etudiant_new.vue'),
+  },
+
+  {
+    path: '/etudiants/listing-account',
+    name: 'student-listing-account',
+    component: () => import('@/views/etudiants/Etudiant_liste.vue'),
+  },
+
+  {
+    path: '/etudiants/actions-account',
+    name: 'student-actions-account',
+    component: () => import('@/views/etudiants/Etudiant_actions.vue'),
+  },
+
+
+
+
 
 
 

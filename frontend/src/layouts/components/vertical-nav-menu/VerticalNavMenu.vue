@@ -3,7 +3,7 @@
     :value="isDrawerOpen"
     app
     floating
-    width="300"
+    width="280"
     class="app-navigation-menu"
     :right="$vuetify.rtl"
     @input="val => $emit('update:is-drawer-open', val)"
@@ -40,26 +40,48 @@
       <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline" ></nav-menu-link>
       <nav-menu-link title="Account Settings" :to="{ name: 'pages-account-settings'}" :icon="icons.mdiAccountCogOutline" ></nav-menu-link>
 
-      <nav-menu-group  title="Administrateurs" :icon="icons.mdiFileOutline" >
-        <nav-menu-link  
-          title="Liste" 
-          :to="{ name: 'admin-listing-account' }" >
+      <nav-menu-group  title="Administrateurs" :icon="icons.mdiAccountGroupOutline" >
+        <nav-menu-link
+          title="Liste administrateurs" 
+          :icon="icons.mdiAccountSettingsOutline"
+          :to="{ name: 'admin-listing-account' }"  >
         </nav-menu-link>
         
         <nav-menu-link  
-          title="Nouveau" 
+          title="Nouvel étudiant" 
+          :icon="icons.mdiAccountPlusOutline"
           :to="{ name: 'admin-create-account' }">
         </nav-menu-link>
       </nav-menu-group>
 
-      <nav-menu-group title="Pages" :icon="icons.mdiFileOutline" >
+      <nav-menu-group  title="Etudiants" :icon="icons.mdiAccountMultipleOutline" >
+        <nav-menu-link  
+          title="Liste étudiants" 
+          :icon="icons.mdiAccountSettingsOutline"
+          :to="{ name: 'student-listing-account' }"  >
+        </nav-menu-link>
+        
+        <nav-menu-link  
+          title="Nouvel étudiant" 
+          :icon="icons.mdiAccountPlusOutline"
+          :to="{ name: 'student-create-account' }">
+        </nav-menu-link>
+        
+        <nav-menu-link  
+          title="Etudiant actions" 
+          :icon="icons.mdiAccountCogOutline"
+          :to="{ name: 'student-actions-account' }">
+        </nav-menu-link>
+      </nav-menu-group>
+
+     <!--  <nav-menu-group title="Pages" :icon="icons.mdiFileOutline" >
         <nav-menu-link title="Login" :to="{ name: 'pages-login' }" target="_blank" ></nav-menu-link>
         <nav-menu-link title="Register" :to="{ name: 'pages-register' }" target="_blank" ></nav-menu-link>
         <nav-menu-link title="Error" :to="{ name: 'error-404' }" target="_blank" ></nav-menu-link>
       </nav-menu-group>
-
+ -->
       <!-- <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title> -->
-      <nav-menu-link
+     <!--  <nav-menu-link
         title="Typography"
         :to="{ name: 'typography' }"
         :icon="icons.mdiAlphaTBoxOutline"
@@ -83,7 +105,7 @@
         title="Form Layouts"
         :to="{ name: 'form-layouts' }"
         :icon="icons.mdiFormSelect"
-      ></nav-menu-link>
+      ></nav-menu-link> -->
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -99,7 +121,12 @@ import {
   mdiFileOutline,
   mdiFormSelect,
   mdiAccountCogOutline,
+  mdiAccountGroupOutline,
+  mdiAccountSettingsOutline,
+  mdiAccountPlusOutline,
+  mdiAccountMultipleOutline,
 } from '@mdi/js'
+
 import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
@@ -126,6 +153,11 @@ export default {
         mdiTable,
         mdiFileOutline,
         mdiFormSelect,
+        mdiAccountCogOutline,
+        mdiAccountGroupOutline,
+        mdiAccountSettingsOutline,
+        mdiAccountPlusOutline,
+        mdiAccountMultipleOutline,
         mdiAccountCogOutline,
       },
     }
