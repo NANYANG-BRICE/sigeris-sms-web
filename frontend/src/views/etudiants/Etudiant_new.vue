@@ -9,167 +9,169 @@
 				Registration Student
 			</v-card-title>
 			<v-form @submit.prevent="Registration" enctype="multipart/form-data">
-				<v-card-text>
-					<v-stepper v-model="e1">
-						<v-stepper-header>
-							<v-stepper-step :complete="e1 > 1" step="1" >
-								Informations Principales
-							</v-stepper-step>
+					<v-card-text>
+						<v-stepper v-model="e1">
+							<v-stepper-header>
+								<v-stepper-step :complete="e1 > 1" step="1" >
+									Informations Principales
+								</v-stepper-step>
 
-							<v-divider></v-divider>
+								<v-divider></v-divider>
 
-							<v-stepper-step :complete="e1 > 2" step="2" >
-								Informations Secondaires
-							</v-stepper-step>
+								<v-stepper-step :complete="e1 > 2" step="2" >
+									Informations Secondaires
+								</v-stepper-step>
+							</v-stepper-header>
 						</v-stepper-header>
-					</v-stepper-header>
 
-					<v-stepper-items>
-						<v-stepper-content step="1">
-							<v-card class="mb-3" color="grey lighten-1" height="210px" >
-								<v-row>
-									<v-col md="6" cols="12" >
-										<span class="invisible">5</span>
-										<span class="text-danger">{{msg_etudiant_firstname}}</span>
-											<v-text-field 
-											:prepend-inner-icon="icons.mdiAccountOutline"
-											v-model="etudiant_firstname"
-											autocomplete="off"
-											outlined
-											label="First name"
-											placeholder="Brice Emmanuel........"
-											hide-details
-											class="mb-3">
-										</v-text-field>
-									</v-col>
+						<v-stepper-items>
+							<v-stepper-content step="1">
+								<v-card class="mb-3" color="grey lighten-1" height="210px" >
+									<v-row>
+										<v-col md="6" cols="12" >
+											<span class="invisible">5</span>
+											<span class="text-danger">{{msg_etudiant_firstname}}</span>
+												<v-text-field 
+												:prepend-inner-icon="icons.mdiAccountOutline"
+												v-model="etudiant_firstname"
+												autocomplete="off"
+												outlined
+												label="First name"
+												placeholder="Brice Emmanuel........"
+												hide-details
+												class="mb-3">
+											</v-text-field>
+										</v-col>
 
-									<v-col md="6" cols="12" >
-										<span class="invisible">5</span>
-										<span class="text-danger">{{msg_etudiant_lastname}}</span>
-										<v-text-field
-											:prepend-inner-icon="icons.mdiAccountOutline"
-											v-model="etudiant_lastname"
-											outlined
-											label="Last name"
-													autocomplete="off"
-											placeholder="Nanyang........"
-											hide-details
-											class="mb-3">
-										</v-text-field>
-									</v-col>
-								</v-row>
+										<v-col md="6" cols="12" >
+											<span class="invisible">5</span>
+											<span class="text-danger">{{msg_etudiant_lastname}}</span>
+											<v-text-field
+												:prepend-inner-icon="icons.mdiAccountOutline"
+												v-model="etudiant_lastname"
+												outlined
+												label="Last name"
+														autocomplete="off"
+												placeholder="Nanyang........"
+												hide-details
+												class="mb-3">
+											</v-text-field>
+										</v-col>
+									</v-row>
 
-								<v-row>
-									<v-col md="6" cols="12" >
-										<span class="invisible">5</span>
-										<span class="text-danger">{{msg_etudiant_contact1}}</span>
-										<v-text-field
-											:prepend-inner-icon="icons.mdiCellphoneSettings"
-											v-model="etudiant_contact1"
-											type="number" 
-											oninput="validity.valid||(value='');" 
-											onpress="isNumber(event)"
-											class="mb-3"
-											outlined
-											autocomplete="off"
-											label="Contact Orange"
-											placeholder="ex : 699.179.767············"
-											hide-details>
-										</v-text-field>
-									</v-col>
+									<v-row>
+										<v-col md="6" cols="12" >
+											<span class="invisible">5</span>
+											<span class="text-danger">{{msg_etudiant_contact1}}</span>
+											<v-text-field
+												:prepend-inner-icon="icons.mdiCellphoneSettings"
+												v-model="etudiant_contact1"
+												type="text" 
+												v-mask="'+237-###-###-###'"
+												oninput="validity.valid||(value='');" 
+												onpress="isNumber(event)"
+												class="mb-3"
+												outlined
+												autocomplete="off"
+												label="Contact Orange"
+												placeholder="ex : 699.179.767············"
+												hide-details>
+											</v-text-field>
+										</v-col>
 
-									<v-col md="6" cols="12" >
-										<span class="invisible">5</span>
-										<v-text-field
-											:prepend-inner-icon="icons.mdiCellphoneSettings"
-											v-model="etudiant_contact2"
-											type="number" 
-											oninput="validity.valid||(value='');" 
-											onpress="isNumber(event)"
-											autocomplete="off"
-											class="mb-3"
-											outlined
-											label="Contact MTN"
-											placeholder="ex : 671.407.609············"
-											hide-details>
-										</v-text-field>
-									</v-col>
-								</v-row>
-							</v-card>
+										<v-col md="6" cols="12" >
+											<span class="invisible">5</span>
+											<v-text-field
+												:prepend-inner-icon="icons.mdiCellphoneSettings"
+												v-model="etudiant_contact2"
+												type="text" 
+												v-mask="'+237-###-###-###'"
+												oninput="validity.valid||(value='');" 
+												onpress="isNumber(event)"
+												autocomplete="off"
+												class="mb-3"
+												outlined
+												label="Contact MTN"
+												placeholder="ex : 671.407.609············"
+												hide-details>
+											</v-text-field>
+										</v-col>
+									</v-row>
+								</v-card>
 
-							<v-btn color="primary" @click="e1 = 2">
-								Continuer
-							</v-btn>
+								<v-btn color="primary" @click="e1 = 2">
+									Continuer
+								</v-btn>
 
-							<v-btn type="reset" >
-								Annuler
-							</v-btn>
-						</v-stepper-content>
+								<v-btn type="reset" >
+									Annuler
+								</v-btn>
+							</v-stepper-content>
 
-						<v-stepper-content step="2">
-							<v-card class="mb-5" color="grey lighten-1" height="210px" >
-								<v-row>
-									<v-col md="12" cols="12" >
-										<span class="text-danger">{{msg_etudiant_email_adress}}</span>
-										<v-text-field
-											:prepend-inner-icon="icons.mdiEmailCheckOutline"
-											v-model="etudiant_email_adress"
-											outlined
-											autocomplete="off"
-											label="Email"
-											placeholder="nanyangbrice@gmail.com........"
-											hide-details
-											class="mb-3">
-										</v-text-field>
-									</v-col>
-								</v-row>
-								<v-row>
-									<v-col md="6" cols="12" >
-										<span class="invisible">5</span>
-										<span class="text-danger">{{msg_classe_etudiant}}</span>
-										<v-autocomplete
-											:prepend-inner-icon="icons.mdiHomeCityOutline"
-											v-model="classe_etudiant"
-											:items="privileges"
-											autocomplete="off"
-											outlined
-											chips
-											small-chips
-											label="Classe étudiant"
-											single>
-										</v-autocomplete>
-									</v-col>
+							<v-stepper-content step="2">
+								<v-card class="mb-5" color="grey lighten-1" height="210px" >
+									<v-row>
+										<v-col md="12" cols="12" >
+											<span class="text-danger">{{msg_etudiant_email_adress}}</span>
+											<v-text-field
+												:prepend-inner-icon="icons.mdiEmailCheckOutline"
+												v-model="etudiant_email_adress"
+												outlined
+												autocomplete="off"
+												label="Email"
+												placeholder="nanyangbrice@gmail.com........"
+												hide-details
+												class="mb-3">
+											</v-text-field>
+										</v-col>
+									</v-row>
+									<v-row>
+										<v-col md="6" cols="12" >
+											<span class="invisible">5</span>
+											<span class="text-danger">{{msg_classe_etudiant}}</span>
+											<v-autocomplete
+												:prepend-inner-icon="icons.mdiHomeCityOutline"
+												v-model="classe_etudiant"
+												:items="classes"
+												autocomplete="off"
+												outlined
+												chips
+												small-chips
+												label="Classe étudiant"
+												single>
+											</v-autocomplete>
+										</v-col>
 
-									<v-col md="6" cols="12">
-										<span class="invisible">5</span>
-										<v-autocomplete
-											:prepend-inner-icon="icons.mdiAccountStarOutline"
-											v-model="etudiant_privileges"
-											:items="privileges"
-											outlined
-											autocomplete="off"
-											chips
-											small-chips
-											placeholder="Selectionnez les privilèges....."
-											label="Privilèges"
-											multiple >
-										</v-autocomplete>
-									</v-col>
-								</v-row>
-							</v-card>
+										<v-col md="6" cols="12">
+											<span class="invisible">5</span>
+											<v-autocomplete
+												:prepend-inner-icon="icons.mdiAccountStarOutline"
+												v-model="etudiant_privileges"
+												:items="privileges"
+												outlined
+												autocomplete="off"
+												chips
+												small-chips
+												placeholder="Selectionnez les privilèges....."
+												label="Privilèges"
+												multiple >
+											</v-autocomplete>
+										</v-col>
+									</v-row>
+								</v-card>
 
-							<v-btn type="submit" color="primary">
-								Enregistrer
-							</v-btn>
+								<v-btn type="submit" color="primary">
+									Enregistrer
+								</v-btn>
 
-							<v-btn @click="e1 = 1" >
-								precedent
-							</v-btn>
-						</v-stepper-content>
-					</v-stepper-items>
-				</v-stepper>
-			</v-card-text>
-		</v-form>
+								<v-btn @click="e1 = 1" >
+									precedent
+								</v-btn>
+							</v-stepper-content>
+						</v-stepper-items>
+						</v-stepper>
+					</v-card-text>
+			</v-form>
 	</v-card>
 </v-col>
 </template>
@@ -195,6 +197,7 @@
 	import {useRouter} from "vue-router";
 
 	export default {
+
 		setup() {
 			const isPasswordVisible = ref(false)
 			const isPasswordVisible1 = ref(false)
@@ -240,6 +243,8 @@
 					'buzz'
 				],
 
+				classes: [],
+
 				msg_etudiant_email_adress: "",
 				msg_etudiant_firstname: "",
 				msg_etudiant_lastname: "",
@@ -249,9 +254,27 @@
 			}
 		},
 
+		created() {
+			this.getClasses();
+		},
+
 
 
 		methods: {
+			async getClasses() {
+				try {
+					const response = await axios.get("Getting_classe");
+					this.classes = response.data.actif;
+					for (var i = response.data.actif.length - 1; i >= 0; i--) {
+						this.classes[i] = response.data.actif[i].classe_fullname+' '+response.data.actif[i].classe_level;
+					}
+					console.log(this.classes);
+				} 
+				catch (error) {
+					console.log(error);
+				}
+			},
+
 			async Registration() {
 				try{
 					const response =  await axios.post("Create_student", {

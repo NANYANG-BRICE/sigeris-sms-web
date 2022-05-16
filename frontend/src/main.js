@@ -11,7 +11,6 @@ import store from './store'
 /* module Axios pour interaction via API */
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/';
-axios.defaults.headers.common['Authorization'];
 
 
 
@@ -34,6 +33,10 @@ import "./styles/main.scss";
 import directives from "./directives/";
 
 import 'font-awesome/css/font-awesome.min.css';
+
+
+import { VueMaskDirective } from 'v-mask'
+Vue.directive('mask', VueMaskDirective);
 
 
 

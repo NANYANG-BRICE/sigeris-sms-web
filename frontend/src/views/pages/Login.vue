@@ -24,6 +24,7 @@
               label="Username"
               placeholder="nanyangbrice@gmail.com"
               hide-details
+              autocomplete="off"
               class="mb-3">
             </v-text-field>
 
@@ -37,6 +38,7 @@
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
               hide-details
+              autocomplete="off"
               @click:append="isPasswordVisible = !isPasswordVisible">
             </v-text-field>
 
@@ -127,9 +129,6 @@
             admin_username: this.admin_username,
             admin_password: this.admin_password,
           });
-          console.log(response);
-          //localStorage.setItem('token', response.data.token);
-          //console.log(token);
           (this.admin_username= ""),
           (this.admin_password= ""),
 
@@ -137,32 +136,27 @@
 
           if (response.data.error === true) {
             Swal.fire({
-              backdrop:true, 
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
               allowOutsideClick: false,
-              confirmButtonText: "Je comprend !",
-              icon: 'error',
-              title: 'Failed !',
-              text: 'Authentification refusée veillez rééseiller...',
-              timer: 15000,
+              confirmButtonText: "Continuer",
             })
-            if(response.data.msg.admin_username) {
-              this.msg_admin_username = response.data.msg.admin_username
-            }
-            if(response.data.msg.admin_password) {
-              this.msg_admin_password = response.data.msg.admin_password
-            }
+            this.msg_admin_username = response.data.msg.admin_username;
+            this.msg_admin_password = response.data.msg.admin_password;
           }
           else{
-            this.$router.push("/");
+            this.$router.push("/dashboard");
             Swal.fire({
-              width: 340,
-              toast: true,
-              timer: 5000,
-              icon : 'success',
-              position: 'top-end',
-              showConfirmButton: false,
-              title : 'Félicitations',
-              text: 'Connexion établie.',
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
+              allowOutsideClick: false,
+              confirmButtonText: "Continuer",
             });
           }
         }

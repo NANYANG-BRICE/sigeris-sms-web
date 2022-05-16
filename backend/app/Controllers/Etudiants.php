@@ -66,8 +66,8 @@ class Etudiants extends ResourceController {
                 'rules' => 'trim|required|min_length[5]|max_length[100]'
             ],
             'etudiant_contact1'         => [
-                'label' => 'Contact Orange de l\'étudiant', 
-                'rules' => 'trim|required|is_unique[etudiant.etudiant_contact1]|is_unique[etudiant.etudiant_contact2]|exact_length[9]'
+                'label' => 'Contact Orange', 
+                'rules' => 'trim|required|is_unique[etudiant.etudiant_contact1]|is_unique[etudiant.etudiant_contact2]|exact_length[16]'
             ],
         ];
 
@@ -78,10 +78,34 @@ class Etudiants extends ResourceController {
         }
         else{
             $json = $this->request->getJSON();
+
+            $etudiant_contact1  = $this->request->getVar('etudiant_contact1');
+            $array              =  explode('-', $etudiant_contact1);
+            $phone1 = $array[0].$array[1].$array[2].$array[3];
+
+            $etudiant_contact2 = $this->request->getVar('etudiant_contact2');
+            $array1            =  explode('-', $etudiant_contact1);
+            $phone2 = $array1[0].$array1[1].$array1[2].$array1[3];
+
+            $classe = $this->request->getVar('classe_etudiant');
+            $length =  strlen($classe) -1;
+            $level = $classe[(strlen(($classe)))-1];
+            $filiere = '';
+            for ($i=0; $i < ($length-2); $i++) { 
+                $filiere = $filiere.$classe[$i];
+            }
+
+            $model_classe = new ClasseModel();
+            $result = $model_classe->where(['classe_fullname' => $filiere])->where(['classe_level' => $level])->findAll();
+            $json->classe_etudiant  = $result['classe_matricule'];
+            $json->etudiant_contact1  = $phone1;
+            $json->etudiant_contact2  = $phone2;
+
+
             $data = [
                 'admin_matricule'       => generate_matricule(),
                 'etudiant_email_adress' => $json->etudiant_email_adress,
-                'classe_etudiant'       => $json->classe_etudiant,
+                'classe_etudiant'       => $json->classe_etudiant ,
                 'etudiant_firstname'    => $json->etudiant_firstname,
                 'etudiant_lastname'     => $json->etudiant_lastname,
                 'etudiant_contact1'     => $json->etudiant_contact1,
@@ -127,18 +151,37 @@ class Etudiants extends ResourceController {
                 'rules' => 'trim|required|min_length[5]|max_length[100]'
             ],
             'etudiant_contact1'         => [
-                'label' => 'Contact Orange de l\'étudiant', 
-                'rules' => 'trim|required|is_unique[etudiant.etudiant_contact2]|exact_length[9]'
+                'label' => 'Contact Orange', 
+                'rules' => 'trim|required|is_unique[etudiant.etudiant_contact2]||min_length[15]'
             ],
         ];
 
         if (!$this->validate($conditions_validations)){
-            $data["error"] = true;
-            $data["msg"] = $this->validator->getErrors();
+            $data["error"]  = true;
+            $data["msg"]    = $this->validator->getErrors();
             return $this->respondCreated($data);
         }
         else{
             $json = $this->request->getJSON();
+            $etudiant_contact1  = $this->request->getVar('etudiant_contact1');
+            $array              =  explode('-', $etudiant_contact1);
+            $phone1 = $array[0].$array[1].$array[2].$array[3];
+            $etudiant_contact2 = $this->request->getVar('etudiant_contact2');
+            $array1            =  explode('-', $etudiant_contact1);
+            $phone2 = $array1[0].$array1[1].$array1[2].$array1[3];
+            $classe = $this->request->getVar('classe_etudiant');
+            $length =  strlen($classe) -1;
+            $level = $classe[(strlen(($classe)))-1];
+            $filiere = '';
+            for ($i=0; $i < ($length-2); $i++) { 
+                $filiere = $filiere.$classe[$i];
+            }
+
+            $model_classe = new ClasseModel();
+            $result = $model_classe->where(['classe_fullname' => $filiere])->where(['classe_level' => $level])->findAll();
+            $json->classe_etudiant  = $result['classe_matricule'];
+            $json->etudiant_contact1  = $phone1;
+            $json->etudiant_contact2  = $phone2;
 
             $data = [
                 'id_etudiant'               => $json->id_etudiant,
@@ -160,9 +203,10 @@ class Etudiants extends ResourceController {
             if (!$find) {
                 $data["error"] = true;
                 return $this->respondCreated($data, 400);
-            } else {
-                $etudiant = $id_etudiant->update($id_etudiant, $data);
-                $data["error"] = false;
+            } 
+            else {
+                $etudiant       = $model_etudiant->update($data['id_etudiant'], $data);
+                $data["error"]  = false;
                 return $this->respondCreated($data, 200);
             }
 
@@ -258,22 +302,14 @@ class Etudiants extends ResourceController {
     public function custom_count_all_about_students()
     {
         $model_etudiant = new EtudiantModel();
-        $data['actif'] = count(
-            $model_etudiant->where(['etudiant_statut' => 'actif'])->findAll()
-        );
-
-        $data['inactif'] = count(
-            $model_etudiant->where(['etudiant_statut' => 'inactif'])->findAll()
-        );
-
-        $data['latent'] = count(
-            $model_etudiant->where(['etudiant_statut' => 'latent'])->findAll()
-        );
+        $data['actif'] = count($model_etudiant->where(['etudiant_statut' => 'actif'])->findAll());
+        $data['inactif'] = count($model_etudiant->where(['etudiant_statut' => 'inactif'])->findAll());
+        $data['latent'] = count($model_etudiant->where(['etudiant_statut' => 'latent'])->findAll());
         
         if (!$data) {
             return $this->failNotFound('Aucun étudiant dans la base de données');
         } else {
-            return $this->respondNoContent($data);
+            return $this->respond($data);
         }
     }
 

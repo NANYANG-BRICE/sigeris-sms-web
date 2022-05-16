@@ -48,7 +48,7 @@
         </nav-menu-link>
         
         <nav-menu-link  
-          title="Nouvel étudiant" 
+          title="Nouvel administrateur" 
           :icon="icons.mdiAccountPlusOutline"
           :to="{ name: 'admin-create-account' }">
         </nav-menu-link>

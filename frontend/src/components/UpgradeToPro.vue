@@ -21,7 +21,7 @@
         v-bind="attrs"
         v-on="on"
       >
-        Upgrade To Pro
+        Contact Us
       </v-btn>
     </template>
 

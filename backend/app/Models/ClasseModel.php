@@ -20,6 +20,7 @@ class ClasseModel extends Model
         'classe_matricule',
         'classe_reference',
         'classe_filiere ',
+        'classe_level',
         'matiere_classe',
         'delegue_classe',
         'delegue_adjouint_classe',

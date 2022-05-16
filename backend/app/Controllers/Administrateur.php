@@ -47,56 +47,55 @@ class Administrateur extends ResourceController {
     {
         helper(['form', 'url']);
         $conditions_validations = [
-            'admin_username'     => [
-                'label' => 'Username',  
-                'rules' => 'trim|required|is_unique[administrateur.admin_username]'
-            ],
             'admin_email'     => [
                 'label' => 'Email',  
-                'rules' => 'trim|required|is_unique[administrateur.admin_username]|valid_email'
+                'rules' => 'required|is_unique[administrateur.admin_username]|valid_email'
             ],
-            'admin_password'  => [
-                'label' => 'Password',  
-                'rules' => 'trim|required'
+            'admin_username'     => [
+                'label' => 'Email',  
+                'rules' => 'required|is_unique[administrateur.admin_username]'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
-                'rules' => 'trim|required|min_length[5]|max_length[100]'
+                'rules' => 'required|min_length[5]|max_length[100]'
             ],
             'admin_lastname'     => [
                 'label' => 'Last Name', 
-                'rules' => 'trim|required|min_length[5]|max_length[100]'
+                'rules' => 'required|min_length[5]|max_length[100]'
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'trim|required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|exact_length[9]'
+                'rules' => 'required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|min_length[15]'
             ],
-            'admin_contact2'         => [
-                'label' => 'Contact MTN', 
-                'rules' => 'trim|required|exact_length[9]|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]'
-            ],
+            'admin_privileges'         => [
+                'label' => 'Privilèges', 
+                'rules' => 'required'
+            ]
         ];
 
         if (!$this->validate($conditions_validations)){
-            $data["error"] = true;
-            $data["msg"] = $this->validator->getErrors();
+            $data = [
+                'status'    => 500,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Echec survenue duant l'enregistrement de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'msg'       => $this->validator->getErrors(),
+                'data'      => []
+            ];
             return $this->respondCreated($data);
         }
         else{
             $json = $this->request->getJSON();
-            if ($json->admin_privileges == '') {
-                $json->admin_privileges = 'all';
-            }
-            
             $data = [
                 'admin_matricule'       => generate_matricule(),
-                'admin_username'        => $json->admin_username,
-                'admin_email'           => $json->admin_email,
-                'admin_password'        => $json->admin_password,
                 'admin_firstname'       => $json->admin_firstname,
                 'admin_lastname'        => $json->admin_lastname,
                 'admin_contact1'        => $json->admin_contact1,
                 'admin_contact2'        => $json->admin_contact2,
+                'admin_username'        => $json->admin_username,
+                'admin_email'           => $json->admin_email,
                 'admin_privileges'      => $json->admin_privileges,
                 'admin_statut'          => 'latent',
                 'admin_token'           => generer_token(),
@@ -108,9 +107,29 @@ class Administrateur extends ResourceController {
             $administrateur = $model_admin->insert($data);
 
             if ($administrateur) {
-                return $this->respondCreated($administrateur);
+                $data = [
+                    'status'    => 200,
+                    'error'     => false,
+                    'icon'      => "success",
+                    'title'     => "Félicitations !",
+                    'timer'     =>  30000,
+                    'alert'     => "Félicitations l'administrateur ".$data['admin_lastname']." ".$data['admin_firstname']." a été correctement enregistré.",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
             } else {
-                return $this->fail("Impossible d'enregistrer l'administrateur", 400);
+                $data = [
+                    'status'    => 400,
+                    'error'     => true,
+                    'icon'      => "success",
+                    'title'     => "Erreur !",
+                    'timer'     =>  30000,
+                    'alert'     => "Impossible d'enregistrer l'administrateur ".$data['admin_lastname']." ".$data['admin_firstname'].".",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
             }
         }
     }
@@ -122,39 +141,44 @@ class Administrateur extends ResourceController {
     {
         helper(['form', 'url']);
         $conditions_validations = [
-            'admin_username'     => [
-                'label' => 'Username',  
-                'rules' => 'trim|required'
-            ],
+            
             'admin_email'     => [
                 'label' => 'Email',  
-                'rules' => 'trim|required|valid_email'
+                'rules' => 'required|is_unique[administrateur.admin_username]|valid_email'
             ],
-            'admin_password'  => [
-                'label' => 'Password',  
-                'rules' => 'trim|required'
+            'admin_username'     => [
+                'label' => 'Email',  
+                'rules' => 'required|is_unique[administrateur.admin_username]'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
-                'rules' => 'trim|required|min_length[5]|max_length[100]'
+                'rules' => 'required|min_length[5]|max_length[100]'
             ],
             'admin_lastname'     => [
                 'label' => 'Last Name', 
-                'rules' => 'trim|required|min_length[5]|max_length[100]'
+                'rules' => 'required|min_length[5]|max_length[100]'
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'trim|required|exact_length[9]'
+                'rules' => 'required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|min_length[15]'
             ],
-            'admin_contact2'         => [
-                'label' => 'Contact MTN', 
-                'rules' => 'trim|required|exact_length[9]'
-            ],
+            'admin_privileges'         => [
+                'label' => 'Privilèges', 
+                'rules' => 'required'
+            ]
         ];
 
         if (!$this->validate($conditions_validations)){
-            $data["error"] = true;
-            $data["msg"] = $this->validator->getErrors();
+            $data = [
+                'status'    => 500,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Echec survenue durant la modification des données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'msg'       => $this->validator->getErrors(),
+                'data'      => []
+            ];
             return $this->respondCreated($data);
         }
         else{
@@ -162,33 +186,47 @@ class Administrateur extends ResourceController {
 
             $data = [
                 'id_admin'              => $json->id_admin,
-                'admin_username'        => $json->admin_username,
-                'admin_email'           => $json->admin_email,
-                'admin_password'        => $json->admin_password,
                 'admin_firstname'       => $json->admin_firstname,
                 'admin_lastname'        => $json->admin_lastname,
-                'admin_picture'         => $json->admin_picture,
                 'admin_contact1'        => $json->admin_contact1,
                 'admin_contact2'        => $json->admin_contact2,
+                'admin_username'        => $json->admin_username,
+                'admin_email'           => $json->admin_email,
+                'admin_privileges'      => $json->admin_privileges,
                 'admin_update_as'       => date('Y-m-d H:i:s')
             ];
             
             $model_admin = new AdministrateurModel();
             $find = $model_admin->find(['id_admin' => $data['id_admin'] ]);
 
-            if (!$find) {
-                $data["error"] = true;
-                return $this->respondCreated($data, 400);
-            } else {
+            if (!$find) 
+            {
+                $data = [
+                    'status'    => 400,
+                    'error'     => true,
+                    'icon'      => "error",
+                    'title'     => "Erreur !",
+                    'timer'     =>  30000,
+                    'alert'     => "Désolé Msr/Mme mais, ils semblerait que vos informations sont incorrectes",
+                    'msg'       => $this->validator->getErrors(),
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            } 
+            else 
+            {
                 $administrateur = $model_admin->update($id_admin, $data);
-                $data["error"] = false;
-                return $this->respondCreated($data, 200);
-            }
-
-            if (!$administrateur) {
-                return $this->fail('Echec survenue durant la modification', 400);
-            } else {
-                return $this->respond($administrateur);
+                $data = [
+                    'status'    => 200,
+                    'error'     => false,
+                    'icon'      => "success",
+                    'title'     => "Félicitations !",
+                    'timer'     =>  30000,
+                    'alert'     => "Félicitations les données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
+                    'msg'       => $this->validator->getErrors(),
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
             }
         }
     }

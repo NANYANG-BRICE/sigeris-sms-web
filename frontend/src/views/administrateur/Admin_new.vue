@@ -13,101 +13,22 @@
 					<v-stepper v-model="e1">
 						<v-stepper-header>
 							<v-stepper-step :complete="e1 > 1" step="1" >
-								Step 1
+								Informations Principales
 							</v-stepper-step>
 
 						<v-divider></v-divider>
 
-						<v-stepper-step :complete="e1 > 2" step="2" >
-							Step 2
-						</v-stepper-step>
-
-						<v-divider></v-divider>
-
-						<v-stepper-step step="3">
-							Step 3
+						<v-stepper-step step="2">
+							Informations Secondaires
 						</v-stepper-step>
 					</v-stepper-header>
 
 					<v-stepper-items>
 						<v-stepper-content step="1">
-							<v-card class="mb-5" color="grey lighten-1" height="200px">
-								<v-row class="mt-2">
-									<v-col md="6" cols="12" >
-										<span class="text-danger">{{msg_admin_username}}</span>
-												<v-text-field 
-												:prepend-inner-icon="icons.mdiAccountLockOutline"
-												v-model="admin_username"
-												outlined
-												label="Username"
-												placeholder="Nanyang Brice........"
-												hide-details
-												class="mb-3">
-											</v-text-field>
-										</v-col>
-
-										<v-col md="6" cols="12" >
-											<span class="text-danger">{{msg_admin_username}}</span>
-											<v-text-field
-											:prepend-inner-icon="icons.mdiEmailCheckOutline"
-											v-model="admin_email"
-											outlined
-											label="Email"
-											placeholder="nanyangbrice@gmail.com........"
-											hide-details
-											class="mb-3">
-										</v-text-field>
-									</v-col>
-								</v-row>
-
-								<v-row>
-									<v-col md="6" cols="12" >
-										<span class="text-danger">{{msg_admin_password}}</span>
-										<v-text-field
-											class="mb-3"
-											:prepend-inner-icon="icons.mdiLockAlertOutline"
-											v-model="admin_password"
-											outlined
-											:type="isPasswordVisible1 ? 'text' : 'password'"
-											label="Password"
-											placeholder="············"
-											:append-icon="isPasswordVisible1 ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-											hide-details
-											@click:append="isPasswordVisible1 = !isPasswordVisible1">
-										</v-text-field>
-									</v-col>
-
-									<v-col md="6" cols="12" >
-										<span class="text-danger">{{msg_admin_password}}</span>
-										<v-text-field
-											class="mb-3"
-											:prepend-inner-icon="icons.mdiLockAlertOutline"
-											v-model="admin_password"
-											outlined
-											:type="isPasswordVisible ? 'text' : 'password'"
-											label="Confirm Password"
-											placeholder="············"
-											:append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-											hide-details
-											@click:append="isPasswordVisible = !isPasswordVisible">
-										</v-text-field>
-									</v-col>
-								</v-row>
-							</v-card>
-
-							<v-btn color="primary" @click="e1 = 2">
-								Continuer
-							</v-btn>
-
-							<v-btn type="reset" >
-								Annuler
-							</v-btn>
-						</v-stepper-content>
-
-						<v-stepper-content step="2">
 							<v-card class="mb-5" color="grey lighten-1" height="200px" >
 								<v-row class="mt-2">
 									<v-col md="6" cols="12" >
+										<span class="invisible">.</span>
 										<span class="text-danger">{{msg_admin_firstname}}</span>
 											<v-text-field 
 											:prepend-inner-icon="icons.mdiAccountOutline"
@@ -121,6 +42,7 @@
 									</v-col>
 
 								<v-col md="6" cols="12" >
+									<span class="invisible">.</span>
 									<span class="text-danger">{{msg_admin_lastname}}</span>
 									<v-text-field
 									:prepend-inner-icon="icons.mdiAccountOutline"
@@ -136,11 +58,13 @@
 
 								<v-row>
 									<v-col md="6" cols="12" >
+										<span class="invisible">.</span>
 										<span class="text-danger">{{msg_admin_contact1}}</span>
 										<v-text-field
 											:prepend-inner-icon="icons.mdiCellphoneSettings"
 											v-model="admin_contact1"
-											type="number" 
+											type="text" 
+											v-mask="'+237-###-###-###'"
 											oninput="validity.valid||(value='');" 
 											onpress="isNumber(event)"
 											class="mb-3"
@@ -152,11 +76,13 @@
 									</v-col>
 
 									<v-col md="6" cols="12" >
+										<span class="invisible">.</span>
 										<span class="text-danger">{{msg_admin_contact2}}</span>
 										<v-text-field
 											:prepend-inner-icon="icons.mdiCellphoneSettings"
 											v-model="admin_contact2"
-											type="number" 
+											type="text" 
+											v-mask="'+237-###-###-###'"
 											oninput="validity.valid||(value='');" 
 											onpress="isNumber(event)"
 											class="mb-3"
@@ -169,19 +95,50 @@
 								</v-row>
 							</v-card>
 
-							<v-btn color="primary" @click="e1 = 3">
+							<v-btn color="primary" @click="e1 = 2">
 								Continuer
 							</v-btn>
 
-							<v-btn @click="e1 = 1" >
-								precedent
+							<v-btn type="reset" >
+								Annuler
 							</v-btn>
 						</v-stepper-content>
 
-						<v-stepper-content step="3">
-							<v-card class="mb-12" color="grey lighten-1" height="100px">
+						<v-stepper-content step="2">
+							<v-card class="mb-12" color="grey lighten-1" height="200px">
+								<v-row class="mt-2">
+									<v-col md="6" cols="12" >
+										<span class="invisible">.</span>
+										<span class="text-danger">{{msg_admin_username}}</span>
+											<v-text-field 
+												:prepend-inner-icon="icons.mdiAccountLockOutline"
+												v-model="admin_username"
+												outlined
+												label="Username"
+												placeholder="Nanyang Brice........"
+												hide-details
+												class="mb-3">
+											</v-text-field>
+										</v-col>
+
+										<v-col md="6" cols="12" >
+											<span class="invisible">.</span>
+											<span class="text-danger">{{msg_admin_email}}</span>
+											<v-text-field
+											:prepend-inner-icon="icons.mdiEmailCheckOutline"
+											v-model="admin_email"
+											outlined
+											label="Email"
+											placeholder="nanyangbrice@gmail.com........"
+											hide-details
+											class="mb-3">
+										</v-text-field>
+									</v-col>
+								</v-row>
+
 								<v-row class="mt-2">
 									<v-col md="12" cols="12" class="conatiner" >
+										<span class="invisible">.</span>
 										<span class="text-danger text-center">{{msg_admin_privileges}}</span>
 										<v-autocomplete
 											:prepend-inner-icon="icons.mdiAccountStarOutline"
@@ -202,7 +159,7 @@
 								Enregistrer
 							</v-btn>
 
-							<v-btn  @click="e1 = 2" >
+							<v-btn  @click="e1 = 1" >
 								Precedent
 							</v-btn>
 						</v-stepper-content>
@@ -237,10 +194,6 @@
 			const isPasswordVisible = ref(false)
 			const isPasswordVisible1 = ref(false)
 
-			const handleFileUpload = async() => {
-				console.log("selected file",file.value.files)
-			}
-
 			return {
 				isPasswordVisible,
 				isPasswordVisible1,
@@ -261,32 +214,33 @@
 		data () {
 			return {
 				e1: 1,
-				admin_username: "",
-				admin_email: "",
-				admin_password: "",
 				admin_firstname: "",
-				admin_lastname: "",
 				admin_lastname: "",
 				admin_contact1: "",
 				admin_contact2: "",
-				admin_privileges: [],
+				admin_username: "",
+				admin_email: "",
+				admin_privileges: [] ,
 
 				privileges: [
-					'foo', 
-					'bar', 
-					'fizz', 
-					'buzz'
+					'student_edit', 
+					'student_deasable', 
+					'student_delete', 
+					'student_print_single_report', 
+					'student_print_global_report', 
+					'student_print_liste', 
+					'student_list',
+					'student_reinitialize',
+					'student_all',
+					'all_privileges',
 				],
 
-				msg_admin_username: "",
-				msg_admin_email: "",
-				msg_admin_password: "",
 				msg_admin_firstname: "",
-				msg_admin_lastname: "",
 				msg_admin_lastname: "",
 				msg_admin_contact1: "",
 				msg_admin_contact2: "",
-				msg_admin_picture: "",
+				msg_admin_username: "",
+				msg_admin_email: "",
 				msg_admin_privileges: "",
 			}
 		},
@@ -297,72 +251,52 @@
 			async Registration() {
 				try{
 					const response =  await axios.post("Create_admin", {
-						admin_username: this.admin_username,
-						admin_email: 	this.admin_email,
-						admin_password: this.admin_password,
-						admin_firstname:this.admin_firstname,
-						admin_lastname: this.admin_lastname,
-						admin_lastname: this.admin_lastname,
+						admin_firstname: this.admin_firstname,
+						admin_lastname: 	this.admin_lastname,
 						admin_contact1: this.admin_contact1,
-						admin_contact2: this.admin_contact2,
+						admin_contact2:this.admin_contact2,
+						admin_username: this.admin_username,
+						admin_email: this.admin_email,
 						admin_privileges: this.admin_privileges,
-						admin_password: this.admin_password,
 					});
-					(this.file= ""),
-					(this.admin_username= ""),
-					(this.admin_email= ""),
-					(this.admin_password= ""),
 					(this.admin_firstname= ""),
-					(this.admin_lastname= ""),
 					(this.admin_lastname= ""),
 					(this.admin_contact1= ""),
 					(this.admin_contact2= ""),
+					(this.admin_username= ""),
+					(this.admin_email= ""),
 					(this.admin_privileges= ""),
 
 					console.log(response.data);
 					if (response.data.error === true) {
 						Swal.fire({
-							backdrop:true, 
-							allowOutsideClick: false,
-							confirmButtonText: "Je comprend !",
-							icon: 'error',
-							title: 'Failed !',
-							text: 'Erreur survenue durant l\'enregistrement...',
-							timer: 15000,
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
+              allowOutsideClick: false,
+              confirmButtonText: "Continuer",
 						})
-						if(response.data.msg.admin_username) {
-							this.msg_admin_username = response.data.msg.admin_email
-						}
-						if(response.data.msg.admin_email) {
-							this.msg_admin_email = response.data.msg.admin_email
-						}
-						if(response.data.msg.admin_password) {
-							this.msg_admin_password = response.data.msg.admin_password
-						}
-						if(response.data.msg.admin_firstname) {
-							this.msg_admin_firstname = response.data.msg.admin_firstname
-						}
-						if(response.data.msg.admin_lastname) {
-							this.msg_admin_lastname = response.data.msg.admin_lastname
-						}
-						if(response.data.msg.admin_contact1) {
-							this.msg_admin_contact1 = response.data.msg.admin_contact1
-						}
-						if(response.data.msg.admin_contact2) {
-							this.msg_admin_contact2 = response.data.msg.admin_contact2
-						}
+						this.msg_admin_firstname 		= response.data.msg.admin_firstname;
+						this.msg_admin_lastname 		= response.data.msg.admin_lastname;
+						this.msg_admin_contact1 		= response.data.msg.admin_contact1;
+						this.msg_admin_contact2 		= response.data.msg.admin_contact2;
+						this.msg_admin_username 		= response.data.msg.admin_username;
+						this.msg_admin_email 				= response.data.msg.admin_email;
+						this.msg_admin_privileges 	= response.data.msg.admin_privileges;
+						
 					}
 					else{
-						this.$router.push("/");
+						this.$router.push("/administrateur/create-account");
 						Swal.fire({
-							width: 340,
-							toast: true,
-							timer: 5000,
-							icon : 'success',
-							position: 'top-end',
-							showConfirmButton: false,
-							title : 'Félicitations',
-							text: 'Connexion établie.',
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
+              allowOutsideClick: false,
+              confirmButtonText: "Continuer",
 						});
 					}
 				}

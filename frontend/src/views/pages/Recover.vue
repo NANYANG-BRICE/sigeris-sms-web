@@ -1,6 +1,6 @@
 <template>
   <div class="auth-wrapper auth-v1">
-    <div class="auth-inner col-md-5">
+    <div class="auth-inner col-md-7">
       <v-card class="auth-card">
 
         <!-- logo -->
@@ -18,63 +18,67 @@
         <v-card-text>
           <v-form @submit.prevent="Reinitialisation">
             <v-row>
-              <v-col md="12" cols="12" >
-                <span class="text-danger">{{msg_admin_username}}</span>
+              <v-col md="6" cols="12" >
+                <span class="text-danger"><span class="invisible">.</span>{{msg_admin_matricule}}</span>
                 <v-text-field 
                   :prepend-inner-icon="icons.mdiAccountHardHat"
-                  v-model="admin_username"
+                  v-model="admin_matricule"
                   outlined
-                  label="Username"
-                  placeholder="Nanyang Brice........"
+                  label="Matricule"
+                  placeholder="FKTS-2547-2478-2021."    
+                  autocomplete="off"
                   hide-details>
                 </v-text-field>
               </v-col>
 
-              <v-col md="12" cols="12" >
-                <span class="text-danger">{{msg_admin_email}}</span>
+              <v-col md="6" cols="12" >
+                <span class="text-danger"><span class="invisible">.</span>{{msg_admin_email}}</span>
                 <v-text-field
                   :prepend-inner-icon="icons.mdiEmailCheckOutline"
                   v-model="admin_email"
                   outlined
                   label="Email"
                   placeholder="nanyangbrice@gmail.com........"
+                  autocomplete="off"
                   hide-details
                   :items="types">
                 </v-text-field>
               </v-col>
 
-              <v-col md="12" cols="12" >
-                <span class="text-danger">{{msg_admin_password}}</span>
+              <v-col md="6" cols="12" >
+                <span class="text-danger"><span class="invisible">.</span>{{msg_admin_password}}</span>
                 <v-text-field
                   :prepend-inner-icon="icons.mdiLockAlertOutline"
                   v-model="admin_password"
                   outlined
-                  :type="isPasswordVisible1 ? 'text' : 'password'"
+                  :type="isPasswordVisible ? 'text' : 'password'"
                   label="Password"
                   placeholder="············"
+                  :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
+                  autocomplete="off"
+                  hide-details
+                  @click:append="isPasswordVisible = !isPasswordVisible">
+                </v-text-field>
+              </v-col>
+
+              <v-col md="6" cols="12" >
+                <span class="text-danger"><span class="invisible">.</span>{{msg_admin_confirm_password}}</span>
+                <v-text-field
+                  :prepend-inner-icon="icons.mdiLockAlertOutline"
+                  v-model="admin_confirm_password"
+                  outlined
+                  :type="isPasswordVisible1 ? 'text' : 'password'"
+                  label="Confirm Password"
+                  placeholder="············"
                   :append-icon="isPasswordVisible1 ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
+                  autocomplete="off"
                   hide-details
                   @click:append="isPasswordVisible1 = !isPasswordVisible1">
                 </v-text-field>
               </v-col>
 
               <v-col md="12" cols="12" >
-                <span class="text-danger">{{msg_admin_password}}</span>
-                <v-text-field
-                  :prepend-inner-icon="icons.mdiLockAlertOutline"
-                  v-model="admin_password"
-                  outlined
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  label="Confirm Password"
-                  placeholder="············"
-                  :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-                  hide-details
-                  @click:append="isPasswordVisible = !isPasswordVisible">
-                </v-text-field>
-              </v-col>
-
-              <v-col md="12" cols="12" >
-                <span class="text-danger">{{msg_admin_type}}</span>
+                <span class="text-danger"><span class="invisible">.</span>{{msg_admin_type}}</span>
                 <v-select :prepend-inner-icon="icons.mdiBookOpenVariant" v-model="admin_type" outlined label="Fonction" :items="types" ></v-select>
               </v-col>
             </v-row>
@@ -122,9 +126,18 @@
 </template>
 
 <script>
-  import { mdiEyeOutline, mdiEyeOffOutline, mdiAccountHardHat, mdiEmailCheckOutline, mdiLockAlertOutline, mdiBookOpenVariant } from '@mdi/js'
-  import { ref } from '@vue/composition-api'
-  import Swal from 'sweetalert2'
+  import { 
+    mdiEyeOutline, 
+    mdiEyeOffOutline, 
+    mdiAccountHardHat, 
+    mdiEmailCheckOutline, 
+    mdiLockAlertOutline, 
+    mdiBookOpenVariant, 
+    mdiQrcode,
+    mdiCodeJson,
+  } from '@mdi/js';
+  import { ref } from '@vue/composition-api';
+  import Swal from 'sweetalert2';
   import axios from "axios";
   import {useRouter} from "vue-router";
 
@@ -157,20 +170,25 @@
           mdiEmailCheckOutline,
           mdiLockAlertOutline,
           mdiBookOpenVariant,
+          mdiQrcode,
+          mdiCodeJson,
         },
       }
     },
 
     data () {
       return {
-        admin_username: "",
+        admin_matricule: "",
         admin_email: "",
+        admin_code_activation: "",
         admin_password: "",
+        admin_confirm_password: "",
         admin_type: "",
 
-        msg_admin_username: "",
+        msg_admin_matricule: "",
         msg_admin_email: "",
         msg_admin_password: "",
+        msg_admin_confirm_password: "",
         msg_admin_type: "",
       };
     },
@@ -179,53 +197,48 @@
       async Reinitialisation() {
         try{
           const response =  await axios.post("Recover", {
-            admin_username: this.admin_username,
-            admin_email:    this.admin_email,
-            admin_password: this.admin_password,
-            admin_type:     this.admin_type,
+            admin_matricule:          this.admin_matricule,
+            admin_email:              this.admin_email,
+            admin_password:           this.admin_password,
+            admin_confirm_password:   this.admin_confirm_password,
+            admin_type:               this.admin_type,
           });
-          (this.admin_username= ""),
+          (this.admin_matricule= ""),
           (this.admin_email= ""),
           (this.admin_password= ""),
+          (this.admin_confirm_password= ""),
           (this.admin_type= ""),
 
           console.log(response.data);
           if (response.data.error === true) {
             Swal.fire({
-              backdrop:true, 
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
               allowOutsideClick: false,
-              confirmButtonText: "Je comprend !",
-              icon: 'error',
-              title: 'Failed !',
-              text: 'Echec survenue durant la récupération de compte rééseillez plutard...',
-              timer: 15000,
+              confirmButtonText: "Continuer",
             })
 
-            if(response.data.msg.admin_username) {
-              this.msg_admin_username = response.data.msg.admin_username
-            }
-            if(response.data.msg.admin_email) {
-              this.msg_admin_email = response.data.msg.admin_email
-            }
-            if(response.data.msg.admin_password) {
-              this.msg_admin_password = response.data.msg.admin_password
-            }
-            if(response.data.msg.admin_type) {
-              this.msg_admin_type = response.data.msg.admin_type 
-            }
+            this.msg_admin_matricule        = response.data.msg.admin_matricule;
+            this.msg_admin_email            = response.data.msg.admin_email;
+            this.msg_admin_password         = response.data.msg.admin_password;
+            this.msg_admin_confirm_password = response.data.msg.admin_confirm_password;
+            this.msg_admin_type             = response.data.msg.admin_type;
+
             console.log(response.data.msg.admin_email);
           }
           else{
-            this.$router.push("/");
+            this.$router.push("/pages/login");
             Swal.fire({
-              width: 340,
-              toast: true,
-              timer: 5000,
-              icon : 'success',
-              position: 'top-end',
-              showConfirmButton: false,
-              title : 'Félicitations',
-              text: 'Connexion établie.',
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
+              allowOutsideClick: false,
+              confirmButtonText: "Continuer",
             });
           }
         }
@@ -244,5 +257,8 @@
 <style>
   .text-danger {
     color: #dc3545 !important;
+  }
+  .invisible {
+    visibility: hidden !important;
   }
 </style>

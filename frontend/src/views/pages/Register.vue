@@ -168,39 +168,29 @@
           console.log(response.data);
           if (response.data.error === true) {
             Swal.fire({
-              backdrop:true, 
+              icon:   response.data.icon,
+              title:  response.data.title,
+              text:   response.data.alert,
+              timer:  response.data.timer,
+              backdrop: true, 
               allowOutsideClick: false,
-              confirmButtonText: "Je comprend !",
-              icon: 'error',
-              title: 'Fatal Error !',
-              text: 'Erreur servenue durant l\'activation du compte...',
-              timer: 15000,
+              confirmButtonText: "Continuer",
             })
-            if(response.data.msg.type) {
-              this.msg_type = response.data.msg.type
-            }
-            if(response.data.msg.token) {
-              this.msg_token = response.data.msg.token
-            }
-            if(response.data.msg.password) {
-              this.msg_password = response.data.msg.password
-            }
-            if(response.data.msg.matricule) {
-              this.msg_matricule = response.data.msg.matricule
-            }
+            this.msg_type = response.data.msg.type
+            this.msg_token = response.data.msg.token
+            this.msg_password = response.data.msg.password
+            this.msg_matricule = response.data.msg.matricule
           }
           else{
-            this.$router.push("/");
+            this.$router.push("/pages/register");
             Swal.fire({
-              width: 340,
-              toast: true,
-              timer: 5000,
-              icon : 'success',
-              position: 'top-end',
-              showConfirmButton: false,
-              title : 'Félicitations',
-              text: 'Connexion établie.',
-            });
+              backdrop:true, 
+              allowOutsideClick: false,
+              confirmButtonText: "Continuer !",
+              icon:   'error',
+              title:  'Fatal !',
+              text:   response.data.alert,
+            })
           }
         }
         catch (error) {

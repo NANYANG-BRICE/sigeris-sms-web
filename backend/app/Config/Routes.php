@@ -42,14 +42,27 @@ $routes->setAutoRoute(true);
 
 /* ==================== fonctionnalitées concernant les administrateurs ==================== */
 
-    $routes->get('Getting_admin', 'Administrateur::select_all_administrateur');
-    $routes->post('Create_admin', 'Administrateur::create_new_administrateur');
-    $routes->post('Update_admin', 'Administrateur::update_administrateur');
-    $routes->get('Countting_admin', 'Administrateur::select_count_administrateur');
-    $routes->get('Get_admin/(:any)', 'Administrateur::select_one_administrateur/$1');
-    $routes->get('Desable_admin/(:any)', 'Administrateur::desable_administrateur/$1');
-    $routes->get('Enable_admin/(:any)', 'Administrateur::enable_administrateur/$1');
-    $routes->get('Delete_admin/(:any)', 'Administrateur::delete_administrateur/$1');
+    $routes->get('Getting_admin',           'Administrateur::select_all_administrateur');
+    $routes->post('Create_admin',           'Administrateur::create_new_administrateur');
+    $routes->post('Update_admin',           'Administrateur::update_administrateur');
+    $routes->get('Countting_admin',         'Administrateur::select_count_administrateur');
+    $routes->get('Get_admin/(:any)',        'Administrateur::select_one_administrateur/$1');
+    $routes->get('Desable_admin/(:any)',    'Administrateur::desable_administrateur/$1');
+    $routes->get('Enable_admin/(:any)',     'Administrateur::enable_administrateur/$1');
+    $routes->get('Delete_admin/(:any)',     'Administrateur::delete_administrateur/$1');
+
+
+
+/* ==================== fonctionnalitées concernant les classes ==================== */
+
+    $routes->get('Getting_classe', 'Classes::select_all_classes');
+    $routes->post('Create_classe', 'Classes::create_new_administrateur');
+    $routes->post('Update_classe', 'Classes::update_administrateur');
+    $routes->get('Countting_classe', 'Classes::select_count_administrateur');
+    $routes->get('Get_classe/(:any)', 'Classes::select_one_administrateur/$1');
+    $routes->get('Desable_classe/(:any)', 'Classes::desable_administrateur/$1');
+    $routes->get('Enable_classe/(:any)', 'Classes::enable_administrateur/$1');
+    $routes->get('Delete_classe/(:any)', 'Classes::delete_administrateur/$1');
 
 
 
@@ -62,11 +75,16 @@ $routes->setAutoRoute(true);
 
 /* ==================== fonctionnalitées concernant les étudiants ==================== */
 
-    $routes->get('Getting_student', 'Etudiants::select_all_students');
-    $routes->post('Create_student', 'Etudiants::create_new_student');
-    $routes->get('Custom_count_student', 'Etudiants::custom_count_all_about_students');
-    $routes->get('Custom_student_search/(:any)', 'Etudiants::custom_search_about_student/$1');
-    $routes->post('Print_student_list', 'Etudiants::print_pdf_student_list');
+    $routes->get('Getting_student',            'Etudiants::select_all_students');
+    $routes->get('Get_student/(:any)',         'Etudiants::select_one_student/$1');
+    $routes->post('Create_student',            'Etudiants::create_new_student');
+    $routes->post('Update_student',            'Etudiants::update_student');
+    $routes->get('Desable_student/(:any)',     'Etudiants::desable_student/$1');
+    $routes->get('Enable_student/(:any)',      'Etudiants::enable_student/$1');
+    $routes->get('Delete_student/(:any)',      'Etudiants::delete_student/$1');
+    $routes->get('Countting_student',          'Etudiants::custom_count_all_about_students');
+    $routes->get('Print_student_list',         'Etudiants::print_pdf_student_list');
+    $routes->get('Print_report_student_list',  'Etudiants::print_pdf_student_report');
     
     
 

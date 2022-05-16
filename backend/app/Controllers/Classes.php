@@ -43,6 +43,7 @@ class Classes extends ResourceController {
 
 
 
+        
     public function create_new_classe()
     {
         helper(['form', 'url']);
@@ -266,7 +267,7 @@ class Classes extends ResourceController {
         );
         
         if (!$data) {
-            return $this->failNotFound('Aucun étudiant dans la base de données');
+            return $this->failNotFound("Aucun étudiant dans la base de données");
         } else {
             return $this->respondNoContent($data);
         }
