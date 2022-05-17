@@ -1,39 +1,32 @@
 <?php
  
 namespace App\Models;
+
  
 use CodeIgniter\Model;
  
-class AdministrateurModel extends Model
+class MatiereModel extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'administrateur';
-    protected $primaryKey           = 'id_admin ';
+    protected $table                = 'matiere';
+    protected $primaryKey           = 'id_matiere ';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
     protected $returnType           = 'array';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
     protected $allowedFields        = [
-        'id_admin',
-        'admin_matricule',
-        'admin_username',
-        'admin_email',
-        'admin_password',
-        'admin_firstname',
-        'admin_lastname',
-        'admin_picture',
-        'admin_contact1',
-        'admin_contact2',
-        'admin_privileges',
-        'admin_statut',
-        'admin_token',
-        'admin_code_activation',
-        'admin_activate_at',
-        'admin_create_as',
-        'admin_update_as',
-        'admin_delete_as',
-        'admin_delete_by'
+        'id_matiere',
+        'matiere_matricule',
+        'matiere_reference',
+        'matiere_sigle ',
+        'matiere_fullname',
+        'matiere_statut',
+        'matiere_create_as',
+        'matiere_update_as',
+        'matiere_delete_as',
+        'matiere_delete_by',
+        'matiere_description'
     ];
  
     // Dates

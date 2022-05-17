@@ -110,7 +110,7 @@ class Authentification extends ResourceController {
                         'icon'      => "success",
                         'title'     => "Félicitations !",
                         'timer'     =>  30000,
-                        'alert'     => "Félicitations Msr/Mme".$table['admin_lastname']." ".$table['admin_firstname'].", authentification réussie ",
+                        'alert'     => "Félicitations Msr/Mme ".$table['admin_lastname']." ".$table['admin_firstname'].", votre authentification est un succès ",
                         'msg'       => '',
                         'data'      => ['token' => $token]
                     ];

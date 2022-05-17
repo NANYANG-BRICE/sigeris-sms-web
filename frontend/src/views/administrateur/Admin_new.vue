@@ -8,7 +8,7 @@
 			<v-card-title>
 				Registration Administrator
 			</v-card-title>
-			<v-form @submit.prevent="Registration" enctype="multipart/form-data">
+			<v-form @submit.prevent="create_new_administrateur">
 				<v-card-text>
 					<v-stepper v-model="e1">
 						<v-stepper-header>
@@ -248,26 +248,28 @@
 
 
 		methods: {
-			async Registration() {
+			async create_new_administrateur() {
 				try{
-					const response =  await axios.post("Create_admin", {
-						admin_firstname: this.admin_firstname,
+					const response 			=  await axios.post("Create_admin", {
+						admin_email: 			this.admin_email,
 						admin_lastname: 	this.admin_lastname,
-						admin_contact1: this.admin_contact1,
-						admin_contact2:this.admin_contact2,
-						admin_username: this.admin_username,
-						admin_email: this.admin_email,
+						admin_contact1: 	this.admin_contact1,
+						admin_contact2: 	this.admin_contact2,
+						admin_username: 	this.admin_username,
+						admin_firstname: 	this.admin_firstname,
 						admin_privileges: this.admin_privileges,
 					});
-					(this.admin_firstname= ""),
-					(this.admin_lastname= ""),
-					(this.admin_contact1= ""),
-					(this.admin_contact2= ""),
-					(this.admin_username= ""),
-					(this.admin_email= ""),
+
+					(this.admin_firstname = ""),
+					(this.admin_lastname  = ""),
+					(this.admin_contact1  = ""),
+					(this.admin_contact2  = ""),
+					(this.admin_username  = ""),
+					(this.admin_email 		= ""),
 					(this.admin_privileges= ""),
 
 					console.log(response.data);
+
 					if (response.data.error === true) {
 						Swal.fire({
               icon:   response.data.icon,
@@ -285,7 +287,6 @@
 						this.msg_admin_username 		= response.data.msg.admin_username;
 						this.msg_admin_email 				= response.data.msg.admin_email;
 						this.msg_admin_privileges 	= response.data.msg.admin_privileges;
-						
 					}
 					else{
 						this.$router.push("/administrateur/create-account");

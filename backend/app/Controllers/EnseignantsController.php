@@ -4,23 +4,23 @@ namespace App\Controllers;
 include 'functions/functions.php';
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\AdministrateurModel;
+use App\Models\EnseignantModel;
 
-class Administrateur extends ResourceController {
+class Enseignants extends ResourceController {
     use ResponseTrait;
 
 
 
-    /* listede tous les administrateurs */
-    public function select_all_administrateur()
+    /* listede tous les enseignants */
+    public function select_all_enseignants()
     {
-        $model_admin = new AdministrateurModel();
-        $data['actif'] = $model_admin->where(['admin_statut' => 'actif'])->findAll();
-        $data['inactif'] = $model_admin->where(['admin_statut' => 'inactif'])->findAll();
-        $data['latent'] = $model_admin->where(['admin_statut' => 'latent'])->findAll();
+        $model_admin = new EnseignantModel();
+        $data['actif'] = $model_admin->where(['enseignant_statut' => 'actif'])->findAll();
+        $data['inactif'] = $model_admin->where(['enseignant_statut' => 'inactif'])->findAll();
+        $data['latent'] = $model_admin->where(['enseignant_statut' => 'latent'])->findAll();
         
         if (!$data) {
-            return $this->failNotFound('Aucun administrateur dans la base de données');
+            return $this->failNotFound('Aucun enseignant dans la base de données');
         } else {
             return $this->respond($data);
         }
@@ -29,32 +29,32 @@ class Administrateur extends ResourceController {
 
 
         
-    /* liste d'un seul administrateurs */
-    public function select_one_administrateur($id_admin = null)
+    /* liste d'un seul enseignants */
+    public function select_one_enseignant($id_admin = null)
     {
-        $model_admin = new AdministrateurModel();
+        $model_admin = new EnseignantModel();
         $data = $model_admin->find(['id_admin' => $id_admin]);
         
         if (!$data) {
-            return $this->failNotFound('Aucun administrateur dans la base de données');
+            return $this->failNotFound('Aucun enseignant dans la base de données');
         } else {
             return $this->respond($data[0]);
         }
     }
 
 
-    /* enregistrement d'un seuladministrateur */
-    public function create_new_administrateur()
+    /* enregistrement d'un seulenseignant */
+    public function create_new_enseignant()
     {
         helper(['form', 'url']);
         $conditions_validations = [
             'admin_email'     => [
                 'label' => 'Email',  
-                'rules' => 'required|is_unique[administrateur.admin_username]|valid_email'
+                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
             ],
             'admin_username'     => [
                 'label' => 'Nom d\'utilisateur',  
-                'rules' => 'required|min_length[8]|is_unique[administrateur.admin_username]'
+                'rules' => 'required|min_length[8]|is_unique[enseignant.admin_username]'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
@@ -66,7 +66,7 @@ class Administrateur extends ResourceController {
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|min_length[15]'
+                'rules' => 'required|is_unique[enseignant.admin_contact1]|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
             'admin_privileges'         => [
                 'label' => 'Privilèges', 
@@ -81,7 +81,7 @@ class Administrateur extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue duant l'enregistrement de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue duant l'enregistrement de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -98,23 +98,23 @@ class Administrateur extends ResourceController {
                 'admin_username'        => $json->admin_username,
                 'admin_email'           => $json->admin_email,
                 'admin_privileges'      => $json->admin_privileges,
-                'admin_statut'          => 'latent',
+                'enseignant_statut'          => 'latent',
                 'admin_token'           => generer_token(),
                 'admin_code_activation' => generer_code_activation(),
                 'admin_create_as'       => date('Y-m-d H:i:s')
             ];
             
-            $model_admin = new AdministrateurModel();
-            $administrateur = $model_admin->insert($data);
+            $model_admin = new EnseignantModel();
+            $enseignant = $model_admin->insert($data);
 
-            if ($administrateur) {
+            if ($enseignant) {
                 $data = [
                     'status'    => 200,
                     'error'     => false,
                     'icon'      => "success",
                     'title'     => "Félicitations !",
                     'timer'     =>  30000,
-                    'alert'     => "Félicitations l'administrateur ".$data['admin_lastname']." ".$data['admin_firstname']." a été correctement enregistré.",
+                    'alert'     => "Félicitations l'enseignant ".$data['admin_lastname']." ".$data['admin_firstname']." a été correctement enregistré.",
                     'msg'       => "",
                     'data'      => []
                 ];
@@ -126,7 +126,7 @@ class Administrateur extends ResourceController {
                     'icon'      => "success",
                     'title'     => "Erreur !",
                     'timer'     =>  30000,
-                    'alert'     => "Impossible d'enregistrer l'administrateur ".$data['admin_lastname']." ".$data['admin_firstname'].".",
+                    'alert'     => "Impossible d'enregistrer l'enseignant ".$data['admin_lastname']." ".$data['admin_firstname'].".",
                     'msg'       => "",
                     'data'      => []
                 ];
@@ -137,19 +137,19 @@ class Administrateur extends ResourceController {
 
 
 
-    /* mise à jours des informations d'un administrateur */
-    public function update_administrateur()
+    /* mise à jours des informations d'un enseignant */
+    public function update_enseignant()
     {
         helper(['form', 'url']);
         $conditions_validations = [
             
             'admin_email'     => [
                 'label' => 'Email',  
-                'rules' => 'required|is_unique[administrateur.admin_username]|valid_email'
+                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
             ],
             'admin_username'     => [
                 'label' => 'Email',  
-                'rules' => 'required|is_unique[administrateur.admin_username]'
+                'rules' => 'required|is_unique[enseignant.admin_username]'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
@@ -161,7 +161,7 @@ class Administrateur extends ResourceController {
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'required|is_unique[administrateur.admin_contact1]|is_unique[administrateur.admin_contact2]|min_length[15]'
+                'rules' => 'required|is_unique[enseignant.admin_contact1]|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
             'admin_privileges'         => [
                 'label' => 'Privilèges', 
@@ -176,7 +176,7 @@ class Administrateur extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue durant la modification des données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue durant la modification des données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -197,7 +197,7 @@ class Administrateur extends ResourceController {
                 'admin_update_as'       => date('Y-m-d H:i:s')
             ];
             
-            $model_admin = new AdministrateurModel();
+            $model_admin = new EnseignantModel();
             $find = $model_admin->find(['id_admin' => $data['id_admin'] ]);
 
             if (!$find) 
@@ -216,14 +216,14 @@ class Administrateur extends ResourceController {
             } 
             else 
             {
-                $administrateur = $model_admin->update($id_admin, $data);
+                $enseignant = $model_admin->update($id_admin, $data);
                 $data = [
                     'status'    => 200,
                     'error'     => false,
                     'icon'      => "success",
                     'title'     => "Félicitations !",
                     'timer'     =>  30000,
-                    'alert'     => "Félicitations les données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
+                    'alert'     => "Félicitations les données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
                     'msg'       => $this->validator->getErrors(),
                     'data'      => []
                 ];
@@ -234,97 +234,97 @@ class Administrateur extends ResourceController {
 
 
 
-    /* désactivation du compte d'un administrateur */
-    public function desable_administrateur($id_admin = null) 
+    /* désactivation du compte d'un enseignant */
+    public function desable_enseignant($id_admin = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'admin_statut'    => 'inactif',
+            'enseignant_statut'    => 'inactif',
             'admin_delete_as' => date('Y-m-d H:i:s')
         ];
-        $model_admin = new AdministrateurModel();
+        $model_admin = new EnseignantModel();
         $find = $model_admin->find(['id_admin' => $id_admin]);
 
         if (!$find) {
             return $this->fail('Aucune donnée trouvée', 404);
         } else {
-            $administrateur = $model_admin->update($id_admin, $data);
+            $enseignant = $model_admin->update($id_admin, $data);
         }
         
-        if (!$administrateur) {
+        if (!$enseignant) {
             return $this->fail('Echec survenue durant la modification', 400);
         } else {
-            return $this->respond($administrateur);
+            return $this->respond($enseignant);
         }
     }
 
 
 
         
-    /* réactivation du compte d'un administrateur */
-    public function enable_administrateur($id_admin = null) 
+    /* réactivation du compte d'un enseignant */
+    public function enable_enseignant($id_admin = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'admin_statut'    => 'actif',
+            'enseignant_statut'    => 'actif',
             'admin_delete_as' => date('Y-m-d H:i:s')
         ];
-        $model_admin = new AdministrateurModel();
+        $model_admin = new EnseignantModel();
         $find = $model_admin->find(['id_admin' => $id_admin]);
 
         if (!$find) {
             return $this->fail('Aucune donnée trouvée', 404);
         } else {
-            $administrateur = $model_admin->update($id_admin, $data);
+            $enseignant = $model_admin->update($id_admin, $data);
         }
         
-        if (!$administrateur) {
+        if (!$enseignant) {
             return $this->fail('Echec survenue durant la modification', 400);
         } else {
-            return $this->respond($administrateur);
+            return $this->respond($enseignant);
         }
     }
 
 
 
         
-    /* suppression du compte d'un administrateur */
-    public function delete_administrateur($id_admin = null) 
+    /* suppression du compte d'un enseignant */
+    public function delete_enseignant($id_admin = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'admin_statut'    => 'latent',
+            'enseignant_statut'    => 'latent',
             'admin_delete_as' => date('Y-m-d H:i:s')
         ];
-        $model_admin = new AdministrateurModel();
+        $model_admin = new EnseignantModel();
         $find = $model_admin->find(['id_admin' => $id_admin]);
 
         if (!$find) {
             return $this->fail('Aucune donnée trouvée', 404);
         } else {
-            $administrateur = $model_admin->update($id_admin, $data);
+            $enseignant = $model_admin->update($id_admin, $data);
         }
         
-        if (!$administrateur) {
+        if (!$enseignant) {
             return $this->fail('Echec survenue durant la modification', 400);
         } else {
-            return $this->respond($administrateur);
+            return $this->respond($enseignant);
         }
     }
 
 
 
         
-    /* fonction pour compter les administrateurs */
-    public function select_count_administrateur()
+    /* fonction pour compter les enseignants */
+    public function select_count_enseignant()
     {
-        $model_admin = new AdministrateurModel();
-        $data['actif']      = count($model_admin->where(['admin_statut' => 'actif'])->findAll());
-        $data['inactif']    = count($model_admin->where(['admin_statut' => 'inactif'])->findAll());
-        $data['latent']     = count($model_admin->where(['admin_statut' => 'latent'])->findAll());
+        $model_admin = new EnseignantModel();
+        $data['actif']      = count($model_admin->where(['enseignant_statut' => 'actif'])->findAll());
+        $data['inactif']    = count($model_admin->where(['enseignant_statut' => 'inactif'])->findAll());
+        $data['latent']     = count($model_admin->where(['enseignant_statut' => 'latent'])->findAll());
         
         if (!$data) {
-            return $this->failNotFound('Aucun administrateur dans la base de données');
+            return $this->failNotFound('Aucun enseignant dans la base de données');
         } else {
             return $this->respond($data);
         }
@@ -332,8 +332,8 @@ class Administrateur extends ResourceController {
 
 
 
-    /* mise à jours des informations relative au profile d'un administrateur */
-    public function update_profile_administrateur()
+    /* mise à jours des informations relative au profile d'un enseignant */
+    public function update_profile_enseignant()
     {
         helper(['form', 'url']);
         $conditions_validations = [
@@ -351,7 +351,7 @@ class Administrateur extends ResourceController {
             ],
             'admin_password'     => [
                 'label' => 'Password',  
-                'rules' => 'required|is_unique[administrateur.admin_username]|valid_email'
+                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
             ],
             'admin_firstname'    => [
                 'label' => 'First Name',
@@ -363,7 +363,7 @@ class Administrateur extends ResourceController {
             ],
             'admin_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'required|is_unique[administrateur.admin_contact2]|min_length[15]'
+                'rules' => 'required|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
             'admin_privileges'         => [
                 'label' => 'Privilèges', 
@@ -378,7 +378,7 @@ class Administrateur extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue durant la modification des données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue durant la modification des données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -398,14 +398,14 @@ class Administrateur extends ResourceController {
                 'admin_contact1'        => $json->admin_contact1,
                 'admin_contact2'        => $json->admin_contact2,
                 'admin_privileges'      => $json->admin_privileges,
-                'admin_statut'          => $json->admin_statut,
+                'enseignant_statut'          => $json->enseignant_statut,
                 'admin_token'           => $json->admin_token,
                 'admin_update_as'       => $json->admin_update_as,
                 'admin_privileges'      => $json->admin_privileges,
                 'admin_update_as'       => date('Y-m-d H:i:s')
             ];
             
-            $model_admin    = new AdministrateurModel();
+            $model_admin    = new EnseignantModel();
             $id_admin       = $data['id_admin'];
             $find           = $model_admin->find(['id_admin' => $data['id_admin'] ]);
 
@@ -425,14 +425,14 @@ class Administrateur extends ResourceController {
             } 
             else 
             {
-                $administrateur = $model_admin->update($id_admin, $data);
+                $enseignant = $model_admin->update($id_admin, $data);
                 $data = [
                     'status'    => 200,
                     'error'     => false,
                     'icon'      => "success",
                     'title'     => "Félicitations !",
                     'timer'     =>  30000,
-                    'alert'     => "Félicitations les données de l'administrateur ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
+                    'alert'     => "Félicitations les données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
                     'msg'       => $this->validator->getErrors(),
                     'data'      => []
                 ];

@@ -1,39 +1,42 @@
 <?php
  
 namespace App\Models;
+
  
 use CodeIgniter\Model;
  
-class AdministrateurModel extends Model
+class EnseignantModel extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'administrateur';
-    protected $primaryKey           = 'id_admin ';
+    protected $table                = 'enseignant';
+    protected $primaryKey           = 'id_enseignant ';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
     protected $returnType           = 'array';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
     protected $allowedFields        = [
-        'id_admin',
-        'admin_matricule',
-        'admin_username',
-        'admin_email',
-        'admin_password',
-        'admin_firstname',
-        'admin_lastname',
-        'admin_picture',
-        'admin_contact1',
-        'admin_contact2',
-        'admin_privileges',
-        'admin_statut',
-        'admin_token',
-        'admin_code_activation',
-        'admin_activate_at',
-        'admin_create_as',
-        'admin_update_as',
-        'admin_delete_as',
-        'admin_delete_by'
+        'id_enseignant',
+        'enseignant_matricule',
+        'planing_enseignant',
+        'matiere_enseignant ',
+        'classe_enseignant',
+        'enseignant_username',
+        'enseignant_password',
+        'enseignant_firstname',
+        'enseignant_lastname',
+        'enseignant_contact1',
+        'enseignant_contact2',
+        'enseignant_email_adress',
+        'enseignant_privileges',
+        'enseignant_statut',
+        'enseignant_token',
+        'enseignant_code_activation',
+        'enseignant_create_as',
+        'enseignant_update_as',
+        'enseignant_delete_as',
+        'enseignant_delete_by',
+        'enseignant_description'
     ];
  
     // Dates

@@ -43,13 +43,18 @@ $routes->setAutoRoute(true);
 /* ==================== fonctionnalitées concernant les administrateurs ==================== */
 
     $routes->get('Getting_admin',           'Administrateur::select_all_administrateur');
+    $routes->get('Get_admin/(:any)',        'Administrateur::select_one_administrateur/$1');
+
     $routes->post('Create_admin',           'Administrateur::create_new_administrateur');
     $routes->post('Update_admin',           'Administrateur::update_administrateur');
-    $routes->get('Countting_admin',         'Administrateur::select_count_administrateur');
-    $routes->get('Get_admin/(:any)',        'Administrateur::select_one_administrateur/$1');
+
     $routes->get('Desable_admin/(:any)',    'Administrateur::desable_administrateur/$1');
     $routes->get('Enable_admin/(:any)',     'Administrateur::enable_administrateur/$1');
     $routes->get('Delete_admin/(:any)',     'Administrateur::delete_administrateur/$1');
+    
+
+    $routes->get('Countting_admin',         'Administrateur::select_count_administrateur');
+    $routes->post('Update_profil_admin',    'Administrateur::update_profile_administrateur');
 
 
 
