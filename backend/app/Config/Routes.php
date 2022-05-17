@@ -102,6 +102,32 @@ $routes->setAutoRoute(true);
 
 
 
+/* ==================== fonctionnalitées concernant les enseignants ==================== */
+
+    $routes->get('Select_all_teachers',                 'Enseignants::select_all_teachers');
+    $routes->get('Select_one_teacher/(:any)',           'Enseignants::select_one_teacher/$1');
+    $routes->post('Create_one_teacher',                 'Enseignants::create_one_new_teacher');
+    $routes->post('Update_specify_teacher',             'Enseignants::update_specify_teacher');
+    $routes->post('Desable_teacher/(:any)',             'Etudiants::desable_teacher/$1');
+    
+
+    $routes->get('Enable_student/(:any)',      'Etudiants::enable_student/$1');
+    $routes->get('Delete_student/(:any)',      'Etudiants::delete_student/$1');
+    $routes->get('Countting_student',          'Etudiants::custom_count_all_about_students');
+    $routes->get('Print_student_list',         'Etudiants::print_pdf_student_list');
+    $routes->get('Print_report_student_list',  'Etudiants::print_pdf_student_report');
+    
+    
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -21,6 +21,7 @@ class EnseignantModel extends Model
         'planing_enseignant',
         'matiere_enseignant ',
         'classe_enseignant',
+        'enseignant_picture',
         'enseignant_username',
         'enseignant_password',
         'enseignant_firstname',

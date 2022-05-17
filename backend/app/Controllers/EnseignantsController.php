@@ -12,12 +12,12 @@ class Enseignants extends ResourceController {
 
 
     /* listede tous les enseignants */
-    public function select_all_enseignants()
+    public function select_all_teachers()
     {
-        $model_admin = new EnseignantModel();
-        $data['actif'] = $model_admin->where(['enseignant_statut' => 'actif'])->findAll();
-        $data['inactif'] = $model_admin->where(['enseignant_statut' => 'inactif'])->findAll();
-        $data['latent'] = $model_admin->where(['enseignant_statut' => 'latent'])->findAll();
+        $model_enseignant   = new EnseignantModel();
+        $data['actif']      = $model_enseignant->where(['enseignant_statut' => 'actif'])->findAll();
+        $data['latent']     = $model_enseignant->where(['enseignant_statut' => 'latent'])->findAll();
+        $data['inactif']    = $model_enseignant->where(['enseignant_statut' => 'inactif'])->findAll();
         
         if (!$data) {
             return $this->failNotFound('Aucun enseignant dans la base de données');
@@ -30,13 +30,13 @@ class Enseignants extends ResourceController {
 
         
     /* liste d'un seul enseignants */
-    public function select_one_enseignant($id_admin = null)
+    public function select_one_teacher($id_enseignant = null)
     {
-        $model_admin = new EnseignantModel();
-        $data = $model_admin->find(['id_admin' => $id_admin]);
+        $model_enseignant   = new EnseignantModel();
+        $data               = $model_enseignant->find(['id_enseignant' => $id_enseignant]);
         
         if (!$data) {
-            return $this->failNotFound('Aucun enseignant dans la base de données');
+            return $this->failNotFound('Aucun enseignant avec cet identifiant dans la base de données');
         } else {
             return $this->respond($data[0]);
         }
@@ -44,31 +44,31 @@ class Enseignants extends ResourceController {
 
 
     /* enregistrement d'un seulenseignant */
-    public function create_new_enseignant()
+    public function create_one_new_teacher()
     {
         helper(['form', 'url']);
         $conditions_validations = [
-            'admin_email'     => [
+            'enseignant_email_adress'     => [
                 'label' => 'Email',  
-                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
+                'rules' => 'required|is_unique[enseignant.enseignant_email_adress]|valid_email'
             ],
-            'admin_username'     => [
-                'label' => 'Nom d\'utilisateur',  
-                'rules' => 'required|min_length[8]|is_unique[enseignant.admin_username]'
-            ],
-            'admin_firstname'    => [
+
+            'enseignant_firstname'    => [
                 'label' => 'First Name',
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_lastname'     => [
+
+            'enseignant_lastname'     => [
                 'label' => 'Last Name', 
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_contact1'         => [
+
+            'enseignant_contact1'         => [
                 'label' => 'Contact Orange', 
                 'rules' => 'required|is_unique[enseignant.admin_contact1]|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
-            'admin_privileges'         => [
+
+            'enseignant_privileges'         => [
                 'label' => 'Privilèges', 
                 'rules' => 'required'
             ]
@@ -81,7 +81,7 @@ class Enseignants extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue duant l'enregistrement de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue durant l'enregistrement de cet enseignant ",
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -90,23 +90,22 @@ class Enseignants extends ResourceController {
         else{
             $json = $this->request->getJSON();
             $data = [
-                'admin_matricule'       => generate_matricule(),
-                'admin_firstname'       => $json->admin_firstname,
-                'admin_lastname'        => $json->admin_lastname,
-                'admin_contact1'        => $json->admin_contact1,
-                'admin_contact2'        => $json->admin_contact2,
-                'admin_username'        => $json->admin_username,
-                'admin_email'           => $json->admin_email,
-                'admin_privileges'      => $json->admin_privileges,
-                'enseignant_statut'          => 'latent',
-                'admin_token'           => generer_token(),
-                'admin_code_activation' => generer_code_activation(),
-                'admin_create_as'       => date('Y-m-d H:i:s')
+                'enseignant_matricule'          => generate_matricule(),
+                'enseignant_firstname'          => $json->enseignant_firstname,
+                'enseignant_lastname'           => $json->enseignant_lastname,
+                'enseignant_contact1'           => $json->enseignant_contact1,
+                'enseignant_contact2'           => $json->enseignant_contact2,
+                'enseignant_email_adress'       => $json->enseignant_email_adress,
+                'enseignant_privileges'         => $json->enseignant_privileges,
+                'enseignant_statut'             => 'latent',
+                'enseignant_token'              => generer_token(),
+                'enseignant_code_activation'    => generer_code_activation(),
+                'enseignant_create_as'          => date('Y-m-d H:i:s')
             ];
             
-            $model_admin = new EnseignantModel();
-            $enseignant = $model_admin->insert($data);
-
+            $model_enseignant   = new EnseignantModel();
+            $enseignant         = $model_enseignant->insert($data);
+            $enseignant_name    = $data['enseignant_lastname']." ".$data['enseignant_firstname'];
             if ($enseignant) {
                 $data = [
                     'status'    => 200,
@@ -114,7 +113,7 @@ class Enseignants extends ResourceController {
                     'icon'      => "success",
                     'title'     => "Félicitations !",
                     'timer'     =>  30000,
-                    'alert'     => "Félicitations l'enseignant ".$data['admin_lastname']." ".$data['admin_firstname']." a été correctement enregistré.",
+                    'alert'     => "Félicitations l'enseignant ".$enseignant_name." a été correctement enregistré.",
                     'msg'       => "",
                     'data'      => []
                 ];
@@ -123,10 +122,10 @@ class Enseignants extends ResourceController {
                 $data = [
                     'status'    => 400,
                     'error'     => true,
-                    'icon'      => "success",
+                    'icon'      => "error",
                     'title'     => "Erreur !",
                     'timer'     =>  30000,
-                    'alert'     => "Impossible d'enregistrer l'enseignant ".$data['admin_lastname']." ".$data['admin_firstname'].".",
+                    'alert'     => "Impossible d'enregistrer l'enseignant ".$enseignant_name.".",
                     'msg'       => "",
                     'data'      => []
                 ];
@@ -138,36 +137,37 @@ class Enseignants extends ResourceController {
 
 
     /* mise à jours des informations d'un enseignant */
-    public function update_enseignant()
+    public function update_specify_teacher()
     {
         helper(['form', 'url']);
         $conditions_validations = [
-            
-            'admin_email'     => [
+            'enseignant_email_adress'     => [
                 'label' => 'Email',  
-                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
+                'rules' => 'required|valid_email'
             ],
-            'admin_username'     => [
-                'label' => 'Email',  
-                'rules' => 'required|is_unique[enseignant.admin_username]'
-            ],
-            'admin_firstname'    => [
+
+            'enseignant_firstname'    => [
                 'label' => 'First Name',
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_lastname'     => [
+
+            'enseignant_lastname'     => [
                 'label' => 'Last Name', 
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_contact1'         => [
+
+            'enseignant_contact1'         => [
                 'label' => 'Contact Orange', 
-                'rules' => 'required|is_unique[enseignant.admin_contact1]|is_unique[enseignant.admin_contact2]|min_length[15]'
+                'rules' => 'required|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
-            'admin_privileges'         => [
+
+            'enseignant_privileges'         => [
                 'label' => 'Privilèges', 
                 'rules' => 'required'
             ]
         ];
+
+        $enseignant_name    = $this->request->getVar('enseignant_lastname')." ".$this->request->getVar('enseignant_firstname');
 
         if (!$this->validate($conditions_validations)){
             $data = [
@@ -176,7 +176,7 @@ class Enseignants extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue durant la modification des données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue durant la modification des données de l'enseignant ".$enseignant_name,
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -186,19 +186,19 @@ class Enseignants extends ResourceController {
             $json = $this->request->getJSON();
 
             $data = [
-                'id_admin'              => $json->id_admin,
-                'admin_firstname'       => $json->admin_firstname,
-                'admin_lastname'        => $json->admin_lastname,
-                'admin_contact1'        => $json->admin_contact1,
-                'admin_contact2'        => $json->admin_contact2,
-                'admin_username'        => $json->admin_username,
-                'admin_email'           => $json->admin_email,
-                'admin_privileges'      => $json->admin_privileges,
-                'admin_update_as'       => date('Y-m-d H:i:s')
+                'id_enseignant'                 => $json->id_enseignant,
+                'enseignant_firstname'          => $json->enseignant_firstname,
+                'enseignant_lastname'           => $json->enseignant_lastname,
+                'enseignant_contact1'           => $json->enseignant_contact1,
+                'enseignant_contact2'           => $json->enseignant_contact2,
+                'enseignant_email_adress'       => $json->enseignant_email_adress,
+                'enseignant_privileges'         => $json->enseignant_privileges,
+                'enseignant_update_as'          => date('Y-m-d H:i:s')
             ];
             
-            $model_admin = new EnseignantModel();
-            $find = $model_admin->find(['id_admin' => $data['id_admin'] ]);
+            $enseignant_name    = $data['enseignant_lastname']." ".$data['enseignant_firstname'];
+            $model_enseignant   = new EnseignantModel();
+            $find               = $model_enseignant->find(['id_enseignant' => $data['id_enseignant'] ]);
 
             if (!$find) 
             {
@@ -208,7 +208,7 @@ class Enseignants extends ResourceController {
                     'icon'      => "error",
                     'title'     => "Erreur !",
                     'timer'     =>  30000,
-                    'alert'     => "Désolé Msr/Mme mais, ils semblerait que vos informations sont incorrectes",
+                    'alert'     => "Désolé mais, ils semblerait que les informations de l'enseignant ".$enseignant_name." sont incorrectes",
                     'msg'       => $this->validator->getErrors(),
                     'data'      => []
                 ];
@@ -216,14 +216,14 @@ class Enseignants extends ResourceController {
             } 
             else 
             {
-                $enseignant = $model_admin->update($id_admin, $data);
+                $enseignant = $model_enseignant->update($data['id_enseignant'], $data);
                 $data = [
                     'status'    => 200,
                     'error'     => false,
                     'icon'      => "success",
                     'title'     => "Félicitations !",
                     'timer'     =>  30000,
-                    'alert'     => "Félicitations les données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
+                    'alert'     => "Félicitations les données de l'enseignant ".$enseignant_name." ont été modifiées avec succès",
                     'msg'       => $this->validator->getErrors(),
                     'data'      => []
                 ];
@@ -235,53 +235,115 @@ class Enseignants extends ResourceController {
 
 
     /* désactivation du compte d'un enseignant */
-    public function desable_enseignant($id_admin = null) 
+    public function desable_teacher($id_enseignant = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'enseignant_statut'    => 'inactif',
-            'admin_delete_as' => date('Y-m-d H:i:s')
+            'enseignant_statut'     => 'inactif',
+            'enseignant_delete_as'  => date('Y-m-d H:i:s')
         ];
-        $model_admin = new EnseignantModel();
-        $find = $model_admin->find(['id_admin' => $id_admin]);
+
+        $model_enseignant   = new EnseignantModel();
+        $find               = $model_enseignant->find(['id_enseignant' => $id_enseignant]);
 
         if (!$find) {
-            return $this->fail('Aucune donnée trouvée', 404);
-        } else {
-            $enseignant = $model_admin->update($id_admin, $data);
-        }
-        
-        if (!$enseignant) {
-            return $this->fail('Echec survenue durant la modification', 400);
-        } else {
-            return $this->respond($enseignant);
-        }
+            $data = [
+                'status'    => 400,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Impossible de désactiver cet enseignant .",
+                'msg'       => "",
+                'data'      => []
+            ];
+            return $this->respondCreated($data);
+        } 
+        else {
+            $enseignant = $model_enseignant->update($id_enseignant, $data);
+            if (!$enseignant) {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "error",
+                    'title'     => "Erreur !",
+                    'timer'     =>  30000,
+                    'alert'     => "Echec survenue durant la modification des données de l'enseignant .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            } else {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "success",
+                    'title'     => "Félicitations !",
+                    'timer'     =>  30000,
+                    'alert'     => "Félicitations le compte de l'enseignant a bien été désactiver .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            }
+        }      
     }
 
 
 
         
     /* réactivation du compte d'un enseignant */
-    public function enable_enseignant($id_admin = null) 
+    public function enable_enseignant($id_enseignant = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'enseignant_statut'    => 'actif',
-            'admin_delete_as' => date('Y-m-d H:i:s')
+            'enseignant_statut'     => 'actif',
+            'enseignant_update_as'  => date('Y-m-d H:i:s')
         ];
-        $model_admin = new EnseignantModel();
-        $find = $model_admin->find(['id_admin' => $id_admin]);
+
+        $model_enseignant   = new EnseignantModel();
+        $find               = $model_enseignant->find(['id_enseignant' => $id_enseignant]);
 
         if (!$find) {
-            return $this->fail('Aucune donnée trouvée', 404);
-        } else {
-            $enseignant = $model_admin->update($id_admin, $data);
-        }
-        
-        if (!$enseignant) {
-            return $this->fail('Echec survenue durant la modification', 400);
-        } else {
-            return $this->respond($enseignant);
+            $data = [
+                'status'    => 400,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Impossible de réactiver cet enseignant .",
+                'msg'       => "",
+                'data'      => []
+            ];
+            return $this->respondCreated($data);
+        } 
+        else {
+            $enseignant = $model_enseignant->update($id_enseignant, $data);
+            if (!$enseignant) {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "error",
+                    'title'     => "Erreur !",
+                    'timer'     =>  30000,
+                    'alert'     => "Echec survenue durant la réactivation du compte de l'enseignant .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            } else {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "success",
+                    'title'     => "Félicitations !",
+                    'timer'     =>  30000,
+                    'alert'     => "Félicitations le compte de l'enseignant a bien été réactivé .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            }
         }
     }
 
@@ -289,26 +351,57 @@ class Enseignants extends ResourceController {
 
         
     /* suppression du compte d'un enseignant */
-    public function delete_enseignant($id_admin = null) 
+    public function delete_enseignant($id_enseignant = null) 
     {
         $json = $this->request->getJSON();
         $data = [
-            'enseignant_statut'    => 'latent',
-            'admin_delete_as' => date('Y-m-d H:i:s')
+            'enseignant_statut'     => 'latent',
+            'enseignant_update_as'  => date('Y-m-d H:i:s')
         ];
-        $model_admin = new EnseignantModel();
-        $find = $model_admin->find(['id_admin' => $id_admin]);
+
+        $model_enseignant   = new EnseignantModel();
+        $find               = $model_enseignant->find(['id_enseignant' => $id_enseignant]);
 
         if (!$find) {
-            return $this->fail('Aucune donnée trouvée', 404);
-        } else {
-            $enseignant = $model_admin->update($id_admin, $data);
-        }
-        
-        if (!$enseignant) {
-            return $this->fail('Echec survenue durant la modification', 400);
-        } else {
-            return $this->respond($enseignant);
+            $data = [
+                'status'    => 400,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Impossible de supprimer cet enseignant .",
+                'msg'       => "",
+                'data'      => []
+            ];
+            return $this->respondCreated($data);
+        } 
+        else {
+            $enseignant = $model_enseignant->update($id_enseignant, $data);
+            if (!$enseignant) {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "error",
+                    'title'     => "Erreur !",
+                    'timer'     =>  30000,
+                    'alert'     => "Echec survenue durant la suppresion du compte de l'enseignant .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            } else {
+                $data = [
+                    'status'    => 500,
+                    'error'     => true,
+                    'icon'      => "success",
+                    'title'     => "Félicitations !",
+                    'timer'     =>  30000,
+                    'alert'     => "Félicitations le compte de l'enseignant a bien été supprimé .",
+                    'msg'       => "",
+                    'data'      => []
+                ];
+                return $this->respondCreated($data);
+            }
         }
     }
 
@@ -316,12 +409,12 @@ class Enseignants extends ResourceController {
 
         
     /* fonction pour compter les enseignants */
-    public function select_count_enseignant()
+    public function select_count_teacher()
     {
-        $model_admin = new EnseignantModel();
+        $model_enseignant   = new EnseignantModel();
         $data['actif']      = count($model_admin->where(['enseignant_statut' => 'actif'])->findAll());
-        $data['inactif']    = count($model_admin->where(['enseignant_statut' => 'inactif'])->findAll());
         $data['latent']     = count($model_admin->where(['enseignant_statut' => 'latent'])->findAll());
+        $data['inactif']    = count($model_admin->where(['enseignant_statut' => 'inactif'])->findAll());
         
         if (!$data) {
             return $this->failNotFound('Aucun enseignant dans la base de données');
@@ -333,39 +426,31 @@ class Enseignants extends ResourceController {
 
 
     /* mise à jours des informations relative au profile d'un enseignant */
-    public function update_profile_enseignant()
+    public function update_profile_teacher()
     {
         helper(['form', 'url']);
         $conditions_validations = [
-            'admin_matricule'     => [
-                'label' => 'Matricule',  
-                'rules' => 'required|min_length[16] '
-            ],
-            'admin_username'     => [
-                'label' => 'Nom d\'utilisation',  
-                'rules' => 'required|min_length[8]'
-            ],
-            'admin_email'     => [
+            'enseignant_email_adress'     => [
                 'label' => 'Email',  
-                'rules' => 'required|valid_email|min_length[8]'
+                'rules' => 'required|valid_email'
             ],
-            'admin_password'     => [
-                'label' => 'Password',  
-                'rules' => 'required|is_unique[enseignant.admin_username]|valid_email'
-            ],
-            'admin_firstname'    => [
+
+            'enseignant_firstname'    => [
                 'label' => 'First Name',
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_lastname'     => [
+
+            'enseignant_lastname'     => [
                 'label' => 'Last Name', 
                 'rules' => 'required|min_length[5]|max_length[100]'
             ],
-            'admin_contact1'         => [
+
+            'enseignant_contact1'         => [
                 'label' => 'Contact Orange', 
                 'rules' => 'required|is_unique[enseignant.admin_contact2]|min_length[15]'
             ],
-            'admin_privileges'         => [
+
+            'enseignant_privileges'         => [
                 'label' => 'Privilèges', 
                 'rules' => 'required'
             ]
@@ -378,7 +463,7 @@ class Enseignants extends ResourceController {
                 'icon'      => "error",
                 'title'     => "Erreur !",
                 'timer'     =>  30000,
-                'alert'     => "Echec survenue durant la modification des données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname'),
+                'alert'     => "Echec survenue durant la mise à jours de vos données. ",
                 'msg'       => $this->validator->getErrors(),
                 'data'      => []
             ];
@@ -388,26 +473,21 @@ class Enseignants extends ResourceController {
             $json = $this->request->getJSON();
 
             $data = [
-                'id_admin'              => $json->id_admin,
-                'admin_matricule'       => $json->admin_matricule,
-                'admin_username'        => $json->admin_username,
-                'admin_email'           => $json->admin_email,
-                'admin_password'        => $json->admin_password,
-                'admin_firstname'       => $json->admin_firstname,
-                'admin_lastname'        => $json->admin_lastname,
-                'admin_contact1'        => $json->admin_contact1,
-                'admin_contact2'        => $json->admin_contact2,
-                'admin_privileges'      => $json->admin_privileges,
-                'enseignant_statut'          => $json->enseignant_statut,
-                'admin_token'           => $json->admin_token,
-                'admin_update_as'       => $json->admin_update_as,
-                'admin_privileges'      => $json->admin_privileges,
-                'admin_update_as'       => date('Y-m-d H:i:s')
+                'id_enseignant'             => $json->id_enseignant,
+                'enseignant_username'       => $json->enseignant_username,
+                'enseignant_password'       => $json->enseignant_password,
+                'enseignant_firstname'      => $json->enseignant_firstname,
+                'enseignant_lastname'       => $json->enseignant_lastname,
+                'enseignant_contact1'       => $json->enseignant_contact1,
+                'enseignant_contact2'       => $json->enseignant_contact2,
+                'enseignant_email_adress'   => $json->enseignant_email_adress,
+                'enseignant_description'    => $json->enseignant_description,
+                'enseignant_update_as'      => date('Y-m-d H:i:s')
             ];
             
             $model_admin    = new EnseignantModel();
-            $id_admin       = $data['id_admin'];
-            $find           = $model_admin->find(['id_admin' => $data['id_admin'] ]);
+            $id_enseignant  = $data['id_enseignant'];
+            $find           = $model_admin->find(['id_enseignant' => $data['id_enseignant'] ]);
 
             if (!$find) 
             {
@@ -425,19 +505,102 @@ class Enseignants extends ResourceController {
             } 
             else 
             {
-                $enseignant = $model_admin->update($id_admin, $data);
-                $data = [
-                    'status'    => 200,
-                    'error'     => false,
-                    'icon'      => "success",
-                    'title'     => "Félicitations !",
-                    'timer'     =>  30000,
-                    'alert'     => "Félicitations les données de l'enseignant ".$this->request->getVar('admin_lastname')." ".$this->request->getVar('admin_firstname')." ont été modifiées avec succès",
-                    'msg'       => $this->validator->getErrors(),
-                    'data'      => []
-                ];
-                return $this->respondCreated($data);
+                $enseignant = $model_admin->update($id_enseignant, $data);
+                if (!$enseignant) {
+                    $data = [
+                        'status'    => 500,
+                        'error'     => true,
+                        'icon'      => "error",
+                        'title'     => "Erreur !",
+                        'timer'     =>  30000,
+                        'alert'     => "Echec survenue durant la mise à jours de votre profil.",
+                        'msg'       => "",
+                        'data'      => []
+                    ];
+                    return $this->respondCreated($data);
+                } else {
+                    $data = [
+                        'status'    => 500,
+                        'error'     => true,
+                        'icon'      => "success",
+                        'title'     => "Félicitations !",
+                        'timer'     =>  30000,
+                        'alert'     => "Félicitations la mise à jours de votre profil est un succès.",
+                        'msg'       => "",
+                        'data'      => []
+                    ];
+                    return $this->respondCreated($data);
+                }
             }
         }
+    }
+
+
+
+    public function upload_enseignant_image()
+    {   
+        helper(['form', 'url']);
+        $conditions_validations = [
+            'enseignant_picture' => [
+                'uploaded[file]',
+                'mime_in[enseignant_picture, image/jpg,image/jpeg,image/gif,image/png]',
+                'max_size[enseignant_picture, 6144]',
+            ]
+        ];
+
+        if (!$this->validate($conditions_validations)){
+            $data = [
+                'status'    => 500,
+                'error'     => true,
+                'icon'      => "error",
+                'title'     => "Erreur !",
+                'timer'     =>  30000,
+                'alert'     => "Veillez selectionner une image valide. ",
+                'msg'       => $this->validator->getErrors(),
+                'data'      => []
+            ];
+            return $this->respondCreated($data);
+        }
+        else{
+            $enseignant_picture = $this->request->getFile('enseignant_picture');
+            $enseignant_picture->move(WRITEPATH . 'uploads');
+        }
+
+
+
+        $msg = 'Please select a valid file';
+
+
+
+        if ($validated) {
+
+            $avatar = $this->request->getFile('file');
+
+            $avatar->move(WRITEPATH . 'uploads');
+
+
+
+            $data = [
+
+
+
+                'name' =>  $avatar->getClientName(),
+
+                'type'  => $avatar->getClientMimeType()
+
+            ];
+
+
+
+            $save = $builder->insert($data);
+
+            $msg = 'File has been uploaded';
+
+        }
+
+
+
+        return redirect()->to( base_url('public/index.php/form') )->with('msg', $msg);
+
     }
 }
